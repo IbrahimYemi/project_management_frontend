@@ -1,5 +1,4 @@
 import React, { FormEvent } from 'react'
-import InputError from '../ui/InputError'
 import { Button } from '../ui/button'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
@@ -14,12 +13,6 @@ interface ResetPasswordFormProps {
     setPassword: (password: string) => void
     passwordConfirmation: string
     setPasswordConfirmation: (passwordConfirmation: string) => void
-    errors: {
-        token?: string[]
-        email?: string[]
-        password?: string[]
-        passwordConfirmation?: string[]
-    }
 }
 
 export function ResetPasswordForm({
@@ -32,7 +25,6 @@ export function ResetPasswordForm({
     setPassword,
     passwordConfirmation,
     setPasswordConfirmation,
-    errors,
 }: ResetPasswordFormProps) {
     return (
         <form onSubmit={submitForm} className="grid grid-cols-2 gap-3">
@@ -49,7 +41,6 @@ export function ResetPasswordForm({
                     onChange={event => setToken(event.target.value)}
                     required
                 />
-                <InputError messages={errors.token ?? []} className="mt-2" />
             </div>
 
             {/* Email Address */}
@@ -65,7 +56,6 @@ export function ResetPasswordForm({
                     onChange={event => setEmail(event.target.value)}
                     required
                 />
-                <InputError messages={errors.email ?? []} className="mt-2" />
             </div>
 
             {/* Password */}
@@ -81,7 +71,6 @@ export function ResetPasswordForm({
                     onChange={event => setPassword(event.target.value)}
                     required
                 />
-                <InputError messages={errors.password ?? []} className="mt-2" />
             </div>
 
             {/* Password Confirmation */}
@@ -98,10 +87,6 @@ export function ResetPasswordForm({
                         setPasswordConfirmation(event.target.value)
                     }
                     required
-                />
-                <InputError
-                    messages={errors.passwordConfirmation ?? []}
-                    className="mt-2"
                 />
             </div>
 

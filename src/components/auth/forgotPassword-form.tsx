@@ -1,5 +1,4 @@
 import React, { FormEvent } from 'react'
-import InputError from '../ui/InputError'
 import { Button } from '../ui/button'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
@@ -8,16 +7,12 @@ interface ForgotPasswordFormProps {
     submitForm: (event: FormEvent<HTMLFormElement>) => void
     email: string
     setEmail: (email: string) => void
-    errors: {
-        email?: string[]
-    }
 }
 
 export function ForgotPasswordForm({
     submitForm,
     email,
     setEmail,
-    errors,
 }: ForgotPasswordFormProps) {
     return (
         <form onSubmit={submitForm}>
@@ -34,8 +29,6 @@ export function ForgotPasswordForm({
                     required
                     autoFocus
                 />
-
-                <InputError messages={errors.email ?? []} className="mt-2" />
             </div>
 
             <div className="flex items-center justify-end mt-4">

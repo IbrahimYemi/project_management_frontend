@@ -1,6 +1,3 @@
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useDispatch } from 'react-redux'
-import { setActiveTab } from '@/store/features/authTabSlice'
 import { cn } from '@/lib/utils'
 import {
     Card,
@@ -12,102 +9,94 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useCallback } from 'react'
 import { FormEvent, useState } from 'react'
 import InputError from '../ui/InputError'
-import { useAuth } from '@/hooks/auth'
-import { AuthErrors } from '@/types/authTypes'
+import {
+    AuthErrors,
+    LoginPasswordParams,
+    LoginTokenParams,
+} from '@/types/authTypes'
 import Link from 'next/link'
+import { validateEmail } from '@/lib/fn/emailValidator'
+import { Loader } from 'lucide-react'
+import { useRequestLoginToken } from '@/hooks/auth/useRequestLoginToken'
+import { useLoginPassword, useLoginToken } from '@/hooks/auth/authHooks'
 
 export function LoginForm({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<'div'>) {
-    const dispatch = useDispatch()
-    const router = useRouter()
-    const searchParams = useSearchParams()
-
-    const switchTab = useCallback(
-        (tab: 'register' | 'login') => {
-            dispatch(setActiveTab(tab))
-            const currentTab = searchParams.get('tab')
-            if (currentTab !== tab) {
-                router.push(`?tab=${tab}`, { scroll: true })
-            }
-        },
-        [dispatch, router, searchParams],
-    )
-
-    const { login } = useAuth({
-        middleware: 'guest',
-        redirectIfAuthenticated: '/dashboard',
-    })
+    const { request, isTokenLoading } = useRequestLoginToken()
+    const { loginWithPassword, isPending: isPasswordLoginLoading } =
+        useLoginPassword()
+    const { loginWithToken, isPending: isTokenLoginLoading } = useLoginToken()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [errors, setErrors] = useState<AuthErrors>({})
+    const [loginToken, setLoginToken] = useState('')
+    const [errors] = useState<AuthErrors>({})
+    const [authMethod, setAuthMethod] = useState<'password' | 'token' | null>(
+        null,
+    )
+    const [emailValid, setEmailValid] = useState(false)
+
+    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const emailValue = event.target.value
+        setEmail(emailValue)
+
+        // Check if the email is valid and update state
+        setEmailValid(validateEmail(emailValue))
+    }
+
+    const handleLoginMethod = (method: 'password' | 'token') => {
+        setAuthMethod(method)
+
+        // Reset the other method's input field based on the selected method
+        if (method === 'password') {
+            setLoginToken('')
+        } else {
+            request({ email })
+            setPassword('')
+        }
+    }
+
+    function handleLoginPassword(values: LoginPasswordParams) {
+        loginWithPassword(values)
+    }
+
+    function handleLoginToken(values: LoginTokenParams) {
+        loginWithToken(values)
+    }
 
     const submitForm = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-
-        login({
-            email,
-            password,
-            setErrors,
-        })
+        if (authMethod === 'password') {
+            handleLoginPassword({
+                email,
+                password,
+            })
+        } else {
+            handleLoginToken({
+                email,
+                login_token: loginToken,
+            })
+        }
     }
 
     return (
-        <div className={cn('flex flex-col gap-6', className)} {...props}>
+        <div
+            className={cn('flex flex-col gap-6 text-white', className)}
+            {...props}
+        >
             <Card>
                 <CardHeader className="text-center">
                     <CardTitle className="text-xl">Welcome back</CardTitle>
-                    <CardDescription>
-                        Login with your Github or Google account
-                    </CardDescription>
+                    <CardDescription>Login to your account</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={submitForm}>
                         <div className="grid gap-6">
-                            <div className="flex items-center gap-4">
-                                <Button variant="outline" className="w-full">
-                                    <svg
-                                        height="32"
-                                        width="32"
-                                        viewBox="0 0 16 16"
-                                        fill="currentColor"
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
-                      0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 
-                      1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 
-                      0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 
-                      2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 
-                      1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 
-                      2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
-                                        ></path>
-                                    </svg>
-                                    Github
-                                </Button>
-                                <Button variant="outline" className="w-full">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
-                                            fill="currentColor"
-                                        />
-                                    </svg>
-                                    Google
-                                </Button>
-                            </div>
-                            <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-                                <span className="relative z-10 bg-background px-2 text-muted-foreground">
-                                    Or continue with
-                                </span>
-                            </div>
+                            {/* Email Section */}
                             <div className="grid gap-6">
                                 <div className="grid gap-2">
                                     <Label htmlFor="email">Email</Label>
@@ -117,10 +106,9 @@ export function LoginForm({
                                         type="email"
                                         value={email}
                                         placeholder="m@example.com"
-                                        onChange={event =>
-                                            setEmail(event.target.value)
-                                        }
+                                        onChange={handleEmailChange}
                                         required
+                                        autoFocus
                                     />
 
                                     <InputError
@@ -128,48 +116,136 @@ export function LoginForm({
                                         className="mt-2"
                                     />
                                 </div>
-                                <div className="grid gap-2">
-                                    <div className="flex items-center">
-                                        <Label htmlFor="password">
-                                            Password
-                                        </Label>
-                                        <Link
-                                            href="/auth/forgot-password"
-                                            className="ml-auto text-sm underline-offset-4 hover:underline"
-                                        >
-                                            Forgot your password?
-                                        </Link>
+
+                                {/* Conditionally Render Inputs Based on Auth Method */}
+                                {emailValid && email.length > 0 && (
+                                    <>
+                                        {authMethod === 'password' && (
+                                            <div className="grid gap-2">
+                                                <div className="flex items-center">
+                                                    <Label htmlFor="password">
+                                                        Password
+                                                    </Label>
+                                                    <Link
+                                                        href="/auth/forgot-password"
+                                                        className="ml-auto text-sm underline-offset-4 hover:underline"
+                                                    >
+                                                        Forgot your password?
+                                                    </Link>
+                                                </div>
+
+                                                <Input
+                                                    id="password"
+                                                    type="password"
+                                                    value={password}
+                                                    placeholder="********"
+                                                    onChange={e =>
+                                                        setPassword(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    className="text-white"
+                                                    required
+                                                    autoComplete="new-password"
+                                                />
+
+                                                <InputError
+                                                    messages={errors?.password}
+                                                    className="mt-2"
+                                                />
+                                            </div>
+                                        )}
+
+                                        {authMethod === 'token' && (
+                                            <div className="grid gap-2">
+                                                <div className="flex items-center">
+                                                    <Label htmlFor="login_token">
+                                                        Login Token
+                                                    </Label>
+                                                </div>
+
+                                                <Input
+                                                    id="login_token"
+                                                    type="text"
+                                                    value={loginToken}
+                                                    placeholder="12CFDE44"
+                                                    onChange={e =>
+                                                        setLoginToken(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    required
+                                                    className="text-white"
+                                                />
+
+                                                <InputError
+                                                    messages={
+                                                        errors?.login_token
+                                                    }
+                                                    className="mt-2"
+                                                />
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+
+                                {/* Show Submit Button Only When Either Password or Token is Provided */}
+                                {(password.length > 4 ||
+                                    loginToken.length > 4) && (
+                                    <Button
+                                        type="submit"
+                                        className="w-full text-center"
+                                    >
+                                        {isPasswordLoginLoading ||
+                                        isTokenLoginLoading ? (
+                                            <Loader className="animate-spin" />
+                                        ) : (
+                                            'Login'
+                                        )}
+                                    </Button>
+                                )}
+
+                                {/* Auth Method Toggle */}
+                                {emailValid && email.length > 0 && (
+                                    <div className="relative w-full flex justify-end -mt-5">
+                                        {isTokenLoading ? (
+                                            <button
+                                                type="button"
+                                                className="bg-none text-xs self-end p-2 outline-none focus:outline-none"
+                                            >
+                                                Requesting...
+                                            </button>
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                className="bg-none text-xs self-end p-2 outline-none focus:outline-none"
+                                                onClick={() =>
+                                                    handleLoginMethod(
+                                                        authMethod ===
+                                                            'password'
+                                                            ? 'token'
+                                                            : 'password',
+                                                    )
+                                                }
+                                            >
+                                                {authMethod === 'password'
+                                                    ? 'login with token'
+                                                    : 'login with password'}
+                                            </button>
+                                        )}
                                     </div>
-
-                                    <Input
-                                        id="password"
-                                        type="password"
-                                        value={password}
-                                        placeholder="********"
-                                        onChange={event =>
-                                            setPassword(event.target.value)
-                                        }
-                                        required
-                                        autoComplete="new-password"
-                                    />
-
-                                    <InputError
-                                        messages={errors?.password}
-                                        className="mt-2"
-                                    />
-                                </div>
-                                <Button type="submit" className="w-full">
-                                    Login
-                                </Button>
+                                )}
                             </div>
+
+                            {/* Sign Up Option */}
                             <div className="text-center text-sm">
                                 Don&apos;t have an account?{' '}
-                                <button
-                                    onClick={() => switchTab('register')}
+                                <Link
+                                    href="/auth/register"
                                     className="underline underline-offset-4"
                                 >
                                     Sign up
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </form>

@@ -1,9 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
-import authTabReducer from './features/authTabSlice'
+import dashboardTabReducer from './slices/dashboardTabSlice'
+import appStateReducer from './slices/appStateSlice'
+import authReducer from './slices/authSlice'
+import activeTabReducer from './slices/activeTabSlice'
 
 export const store = configureStore({
     reducer: {
-        authTab: authTabReducer,
+        auth: authReducer,
+        activeTab: activeTabReducer,
+        appState: appStateReducer,
+        dashboardTab: dashboardTabReducer,
     },
 })
 
