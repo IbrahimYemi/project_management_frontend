@@ -1,11 +1,26 @@
 'use client'
 
+import Loading from '@/components/cards/loading'
 import { appStorage } from '@/lib/generic.fn'
-import { AUTH_TOKEN_STORAGE_KEY } from '@/store/constants'
+import { STORAGE_KEYS } from '@/store/constants'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
-export default function HomePage() {
-    const token = appStorage.retrieve(AUTH_TOKEN_STORAGE_KEY)
+export default function HomeScreen() {
+    const token = appStorage.retrieve(STORAGE_KEYS.AUTH_TOKEN)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        if (token) {
+            setLoading(false)
+        }
+
+        setLoading(false)
+    }, [token])
+
+    if (loading) {
+        return <Loading />
+    }
 
     return (
         <div className="bg-gray-50">
@@ -92,7 +107,7 @@ export default function HomePage() {
                         ].map((feature, index) => (
                             <div
                                 key={index}
-                                className="p-6 bg-gray-50 border border-green-100 rounded-lg shadow-md transform transition hover:-translate-y-2 hover:shadow-lg"
+                                className="p-6 bg-gray-50 border border-green-100 rounded-md shadow-md transform transition hover:-translate-y-2 hover:shadow-lg"
                             >
                                 <div className="text-4xl mb-4">
                                     {feature.icon}

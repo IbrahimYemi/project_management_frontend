@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { toast } from 'react-toastify'
 import { appStorage, logoutAppUser } from './generic.fn'
-import { AUTH_TOKEN_STORAGE_KEY } from '@/store/constants'
+import { STORAGE_KEYS } from '@/store/constants'
 
 // Setup axios instance with credentials & base config
 axios.defaults.withCredentials = true
@@ -18,7 +17,7 @@ const apiClient = axios.create({
 // Add a request interceptor to include the token
 apiClient.interceptors.request.use(
     config => {
-        const token = appStorage.retrieve(AUTH_TOKEN_STORAGE_KEY)
+        const token = appStorage.retrieve(STORAGE_KEYS.AUTH_TOKEN)
         if (token) {
             config.headers.Authorization = `Bearer ${token}`
         }
@@ -35,14 +34,8 @@ apiClient.interceptors.response.use(
             (error.response && error.response.status === 401) ||
             (error.response && error.response.status === 419)
         ) {
-            console.warn('Session expired (401). Clearing local storage...')
-
             // Reset the auth
             logoutAppUser()
-
-            window.location.href = '/auth/login'
-
-            toast.error('Session expired. Please log in again.')
         }
 
         return Promise.reject(error)

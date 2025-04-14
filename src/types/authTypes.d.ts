@@ -2,13 +2,19 @@ export type email = {
     email: string
 }
 
+export type UserAppRoles = 'Super Admin' | 'Admin' | 'Team Lead' | 'Member'
+
 // User Types
-export type User = email & {
+export type User = {
+    email: string
     id: string
     name: string
     avatar: string
     role: string
     isActive?: boolean
+    app_role?: UserAppRoles
+    created_at?: string
+    updated_at?: string
 }
 
 // Auth State Type
@@ -45,11 +51,24 @@ export type ForgotPasswordParams = email
 
 export type LoginToken = email
 
-export type ResetPasswordParams = email & {
-    token: string
+export type genericPasswordParams = {
     password: string
     password_confirmation: string
 }
+
+export type UpdatePasswordParams = genericPasswordParams & {
+    old_password: string
+}
+
+export type UpdateAvatarParams = {
+    avatar: string
+    name: string
+}
+
+export type ResetPasswordParams = email &
+    genericPasswordParams & {
+        token: string
+    }
 
 // Validation Errors Type (from API)
 export type AuthErrors = Partial<{

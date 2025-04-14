@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useAppDispatch } from '@/store/hooks'
 import { removeUser } from '@/store/slices/authSlice'
 import { ApiErrorResponse, ApiAuthResponse } from '@/types/generic'
-import { AUTH_USER_QUERY_KEY } from '@/store/constants'
+import { QUERY_KEYS } from '@/store/constants'
 import { setAppState } from '@/store/slices/appStateSlice'
 import { logoutAppUser } from '@/lib/generic.fn'
 
@@ -19,13 +19,13 @@ export const useLogout = () => {
         {
             mutationFn: logoutUser,
             onSuccess: () => {
-                dispatch(removeUser())
                 logoutAppUser()
-                queryClient.removeQueries({ queryKey: AUTH_USER_QUERY_KEY })
+                queryClient.removeQueries({ queryKey: QUERY_KEYS.AUTH_USER })
 
                 router.push('/auth/login')
 
                 dispatch(setAppState('isIdle'))
+                dispatch(removeUser())
                 toast.success('Logged out successfully!')
             },
             onError: error => {

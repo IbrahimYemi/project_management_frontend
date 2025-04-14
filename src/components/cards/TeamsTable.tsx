@@ -7,18 +7,23 @@ import {
     flexRender,
     ColumnDef,
 } from '@tanstack/react-table'
-import { Team } from '@/types/dashboard'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ChevronDown, ChevronUp, PlusSquareIcon } from 'lucide-react'
 import EmptyTable from './EmptyTable'
+import { Team } from '@/types/teams'
+import Link from 'next/link'
+import DeleteButton from '../ui/DeleteButton'
+import FormDispatcher from '../ui/FormDispatcher'
 
 type TeamManagementTableProps = {
     teams: Team[]
+    onDelete: (id: string) => void
 }
 
-const TeamManagementTable: React.FC<TeamManagementTableProps> = ({ teams }) => {
-    const [globalFilter, setGlobalFilter] = useState<string | undefined>(
-        undefined,
-    )
+const TeamManagementTable: React.FC<TeamManagementTableProps> = ({
+    teams,
+    onDelete,
+}) => {
+    const [globalFilter, setGlobalFilter] = useState<string>('')
 
     const columns = useMemo<ColumnDef<Team>[]>(
         () => [
@@ -29,19 +34,24 @@ const TeamManagementTable: React.FC<TeamManagementTableProps> = ({ teams }) => {
             {
                 id: 'actions',
                 header: 'Actions',
-                cell: () => (
+                cell: ({ row }) => (
                     <div className="flex gap-2">
-                        <button className="px-3 py-1 text-sm bg-blue-500 text-white rounded">
-                            Edit
-                        </button>
-                        <button className="px-3 py-1 text-sm bg-red-500 text-white rounded">
-                            Delete
-                        </button>
+                        <Link
+                            href={`/teams/${row.original.id}`}
+                            className="px-3 py-1 text-sm bg-blue-500 text-white rounded"
+                        >
+                            View
+                        </Link>
+                        <DeleteButton
+                            text="Delete"
+                            classNames="px-3 py-1 text-sm bg-red-500 text-white rounded"
+                            onClick={() => onDelete(row.original.id)}
+                        />
                     </div>
                 ),
             },
         ],
-        [],
+        [onDelete],
     )
 
     const table = useReactTable({
@@ -55,14 +65,26 @@ const TeamManagementTable: React.FC<TeamManagementTableProps> = ({ teams }) => {
     })
 
     return (
-        <div className="p-6 bg-baseColor w-full text-white rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Team Management</h2>
+        <div className="p-2 md:p-4 bg-baseColor w-full text-white rounded-md shadow-md">
+            <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">Team Management</h2>
+                <FormDispatcher
+                    text={
+                        <>
+                            <PlusSquareIcon className="size-3" />
+                            <h3>create</h3>
+                        </>
+                    }
+                    type={'create-team'}
+                    classNames="bg-emerald-700 flex items-center gap-1 text-sm md:text-base text-white rounded-md text-center py-0.5 px-2"
+                />
+            </div>
             <input
                 type="text"
                 value={globalFilter}
                 onChange={e => setGlobalFilter(e.target.value)}
                 placeholder="Search..."
-                className="mb-4 px-3 py-2 border rounded text-baseText bg-gray-700"
+                className="mb-4 px-3 py-2 border rounded-md text-baseText bg-gray-700 w-full md:w-2/5"
             />
             <div className="w-full overflow-x-auto">
                 <table className="w-full border-collapse min-w-[600px]">
@@ -111,7 +133,7 @@ const TeamManagementTable: React.FC<TeamManagementTableProps> = ({ teams }) => {
                                 <td colSpan={4}>
                                     <EmptyTable<Team>
                                         data={teams}
-                                        text="No teams available, start inviting"
+                                        text="No teams available, start creating"
                                     />
                                 </td>
                             </tr>

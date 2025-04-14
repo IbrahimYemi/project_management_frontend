@@ -3,7 +3,7 @@
 import { GalleryVerticalEnd } from 'lucide-react'
 import { ResetPasswordScreen } from '@/screens/auth/ResetPasswordScreen'
 import Link from 'next/link'
-import GuestLayout from '@/components/layout.tsx/GuestLayout'
+import GuestLayout from '@/components/layouts/GuestLayout'
 
 export default function ResetPasswordPage() {
     return (

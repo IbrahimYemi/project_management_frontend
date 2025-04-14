@@ -1,12 +1,16 @@
 'use client'
 
 import AppLayout from '@/components/app/AppLayout'
+import ErrorPage from '@/components/cards/ErrorPage'
 import TeamManagementTable from '@/components/cards/TeamsTable'
 import { ProjectBarChart } from '@/components/charts/BarChart'
 import { ProjectLineChart } from '@/components/charts/LineChart'
 import { ProjectPieChart } from '@/components/charts/PieChart'
 import { ChartConfig } from '@/components/ui/chart'
+import { useTeamActions } from '@/hooks/teams/useTeamActions'
 import { useDashboard } from '@/hooks/useDashboard'
+import { useAppDispatch } from '@/store/hooks'
+import { setAppState } from '@/store/slices/appStateSlice'
 
 const chartConfig: ChartConfig = {
     name: {
@@ -16,7 +20,16 @@ const chartConfig: ChartConfig = {
 }
 
 export default function DashboardScreen() {
-    const { data, isLoading } = useDashboard()
+    const dispatch = useAppDispatch()
+    const { data, isLoading, isError, error } = useDashboard()
+    const { deleteTeam } = useTeamActions()
+
+    const handleDeleteTeam = (id: string) => {
+        dispatch(setAppState('isRequesting'))
+        deleteTeam(id)
+    }
+
+    if (isError) return <ErrorPage error={error} />
 
     return (
         <AppLayout isLoading={isLoading}>
@@ -43,7 +56,10 @@ export default function DashboardScreen() {
                 />
 
                 {/* team list table */}
-                <TeamManagementTable teams={data?.teams || []} />
+                <TeamManagementTable
+                    teams={data?.teams || []}
+                    onDelete={handleDeleteTeam}
+                />
             </div>
         </AppLayout>
     )

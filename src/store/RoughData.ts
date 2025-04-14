@@ -1,5 +1,6 @@
 import { User } from '@/types/authTypes'
 import { DashboardData } from '@/types/dashboard'
+import { TaskType } from '@/types/tasks'
 import {
     Briefcase,
     Settings,
@@ -9,38 +10,36 @@ import {
     ListChecks,
     CalendarDays,
 } from 'lucide-react'
-export const tabs: string[] = ['overview', 'board', 'files', 'members']
-
-export const tasks = [
-    'Alice',
-    'Bob',
-    'Charlie',
-    'Bob',
-    'Charlie',
-    'Bob',
-    'Charlie',
-    'Bob',
-    'Charlie',
-    'Bob',
-    'Charlie',
-]
 
 export const links = [
     { label: 'dashboard', href: '/dashboard', Icon: Home },
     { label: 'users', href: '/users', Icon: UserSquare },
     { label: 'projects', href: '/projects', Icon: Briefcase },
     { label: 'teams', href: '/teams', Icon: Users2 },
-    { label: 'tasks', href: '/projects/tasks', Icon: ListChecks },
-    { label: 'calender', href: '/calender', Icon: CalendarDays },
+    { label: 'tasks', href: '/tasks', Icon: ListChecks },
+    { label: 'calendar', href: '/calendar', Icon: CalendarDays },
     { label: 'settings', href: '/settings', Icon: Settings },
 ]
 
+export const priorityColors: Record<string, string> = {
+    low: 'green',
+    normal: 'blue',
+    medium: 'yellow',
+    high: 'orange',
+    urgent: 'red',
+    daily: 'purple',
+    default: 'gray',
+}
+
+export const tasks = ['Alice', 'Bob', 'Charlie']
+
 export const mockDashboardData: DashboardData = {
     projects: [
-        { name: 'Completed', value: 45 },
+        { name: 'Completed', value: 35 },
         { name: 'In Progress', value: 25 },
         { name: 'In Review', value: 20 },
-        { name: 'Not Started', value: 10 },
+        { name: 'On Hold', value: 16 },
+        { name: 'Not Started', value: 4 },
     ],
     allProjectsData: [
         { name: 'E-commerce Platform', statusName: 'In Progress', value: 60 },
@@ -63,24 +62,42 @@ export const mockDashboardData: DashboardData = {
         { name: 'Final Testing', value: 95, owner: 'owner user 12' },
     ],
     meetings: [
-        { agenda: 'Project Kickoff', date: '2025-02-22', time: '10:00 AM' },
-        { agenda: 'Sprint Planning', date: '2025-02-23', time: '02:00 PM' },
-        { agenda: 'Client Review', date: '2025-02-24', time: '04:30 PM' },
+        {
+            id: '2',
+            agenda: 'Project Kickoff',
+            date: '2025-02-22',
+            time: '10:00 AM',
+        },
+        {
+            id: '21',
+            agenda: 'Sprint Planning',
+            date: '2025-02-23',
+            time: '02:00 PM',
+        },
+        {
+            id: '22',
+            agenda: 'Client Review',
+            date: '2025-02-24',
+            time: '04:30 PM',
+        },
     ],
     teams: [
         {
+            id: '1',
             name: 'Frontend Team',
             teamLead: 'Alice Johnson',
             members: 5,
             projectCount: 15,
         },
         {
+            id: '12',
             name: 'Backend Team',
             teamLead: 'Morris Kent',
             members: 5,
             projectCount: 15,
         },
         {
+            id: '10',
             name: 'QA Team',
             teamLead: 'Alabi Johnson',
             members: 5,
@@ -96,3 +113,142 @@ export const allUsersData: User[] = Array.from({ length: 30 }, (_, i) => ({
     avatar: `https://i.pravatar.cc/150?img=${(i % 70) + 1}`,
     role: 'Member',
 }))
+
+export const tasksData: TaskType[] = [
+    {
+        id: 'task-1',
+        percentage: 40,
+        name: 'Design Homepage UI',
+        description:
+            'Create wireframes and high-fidelity designs for the homepage.',
+        status: 'in-progress',
+        project: 'Website Redesign',
+        owner: {
+            id: 'user-1',
+            name: 'Alice Johnson',
+            email: 'alice@example.com',
+            avatar: 'https://i.pravatar.cc/150?img=1',
+            role: 'UI/UX Designer',
+            isActive: true,
+        },
+        startDate: '2024-02-10',
+        dueDate: '2024-03-05',
+        createdDate: '2024-02-08',
+        updatedDate: '2024-02-20',
+        isCompleted: false,
+        priority: 'high',
+    },
+    {
+        id: 'task-2',
+        percentage: 40,
+        name: 'Setup Database Schema',
+        description:
+            'Define models and relationships for the new application database.',
+        status: 'pending',
+        project: 'Backend Development',
+        owner: {
+            id: 'user-2',
+            name: 'Michael Smith',
+            email: 'michael@example.com',
+            avatar: 'https://i.pravatar.cc/150?img=2',
+            role: 'Backend Engineer',
+            isActive: true,
+        },
+        startDate: '2024-02-15',
+        dueDate: '2024-02-25',
+        createdDate: '2024-02-10',
+        updatedDate: '2024-02-15',
+        isCompleted: false,
+        priority: 'medium',
+    },
+    {
+        id: 'task-3',
+        percentage: 40,
+        name: 'Implement Authentication System',
+        description: 'Develop OAuth and JWT-based authentication for users.',
+        status: 'in-progress',
+        project: 'User Management',
+        owner: {
+            id: 'user-3',
+            name: 'Samantha Green',
+            email: 'samantha@example.com',
+            avatar: 'https://i.pravatar.cc/150?img=3',
+            role: 'Full-Stack Developer',
+            isActive: true,
+        },
+        startDate: '2024-02-18',
+        dueDate: '2024-03-02',
+        createdDate: '2024-02-12',
+        updatedDate: '2024-02-22',
+        isCompleted: false,
+        priority: 'urgent',
+    },
+    {
+        id: 'task-4',
+        percentage: 40,
+        name: 'Write API Documentation',
+        description: 'Document REST API endpoints for frontend developers.',
+        status: 'completed',
+        project: 'Backend Development',
+        owner: {
+            id: 'user-4',
+            name: 'David Brown',
+            email: 'david@example.com',
+            avatar: 'https://i.pravatar.cc/150?img=4',
+            role: 'Technical Writer',
+            isActive: true,
+        },
+        startDate: '2024-02-05',
+        dueDate: '2024-02-12',
+        createdDate: '2024-02-03',
+        updatedDate: '2024-02-12',
+        isCompleted: true,
+        priority: 'normal',
+    },
+    {
+        id: 'task-5',
+        percentage: 40,
+        name: 'Optimize Database Queries',
+        description:
+            'Improve the performance of database queries for faster response times.',
+        status: 'review',
+        project: 'Backend Optimization',
+        owner: {
+            id: 'user-5',
+            name: 'John Doe',
+            email: 'john@example.com',
+            avatar: 'https://i.pravatar.cc/150?img=5',
+            role: 'Database Administrator',
+            isActive: true,
+        },
+        startDate: '2024-02-20',
+        dueDate: '2024-02-28',
+        createdDate: '2024-02-18',
+        updatedDate: '2024-02-25',
+        isCompleted: false,
+        priority: 'high',
+    },
+    {
+        id: 'task-6',
+        percentage: 40,
+        name: 'Daily Stand-up Meeting',
+        description:
+            'Attend the daily team meeting to discuss progress and blockers.',
+        status: 'scheduled',
+        project: 'Team Coordination',
+        owner: {
+            id: 'user-6',
+            name: 'Emily White',
+            email: 'emily@example.com',
+            avatar: 'https://i.pravatar.cc/150?img=6',
+            role: 'Project Manager',
+            isActive: true,
+        },
+        startDate: '2024-02-26',
+        dueDate: '2024-02-26',
+        createdDate: '2024-02-26',
+        updatedDate: '2024-02-26',
+        isCompleted: false,
+        priority: 'daily',
+    },
+]

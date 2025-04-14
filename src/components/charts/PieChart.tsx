@@ -65,11 +65,13 @@ export function ProjectPieChart({ projectData }: { projectData: Project[] }) {
             <CardHeader className="flex-row items-start space-y-0 pb-0">
                 <div className="grid gap-1">
                     <CardTitle>Project Status</CardTitle>
-                    <CardDescription>Task Completion Overview</CardDescription>
+                    <CardDescription>
+                        Project Completion Overview
+                    </CardDescription>
                 </div>
                 <Select value={activeProject} onValueChange={setActiveProject}>
                     <SelectTrigger
-                        className="ml-auto h-7 w-[160px] rounded-lg pl-2.5"
+                        className="ml-auto h-7 w-[160px] rounded-md pl-2.5"
                         aria-label="Select a status"
                     >
                         <SelectValue placeholder="Select status" />
@@ -79,11 +81,11 @@ export function ProjectPieChart({ projectData }: { projectData: Project[] }) {
                             <SelectItem
                                 key={item.name}
                                 value={item.name}
-                                className="rounded-lg"
+                                className="rounded-md"
                             >
                                 <div className="flex items-center gap-2 text-xs">
                                     <span
-                                        className="flex h-3 w-3 shrink-0 rounded-sm"
+                                        className="flex h-3 w-3 shrink-0 rounded-md"
                                         style={{
                                             backgroundColor:
                                                 colors[index % colors.length],

@@ -1,7 +1,12 @@
 import React from 'react'
 import AppLayout from './AppLayout'
+import { useRouter } from 'next/navigation'
 
 export default function NotFoundPage() {
+    const router = useRouter()
+    const handleGoBack = () => {
+        router.replace('/dashboard')
+    }
     return (
         <AppLayout>
             <div className="min-w-screen min-h-screen bg-black flex items-center p-5 lg:p-20 overflow-hidden relative">
@@ -23,7 +28,7 @@ export default function NotFoundPage() {
                         <div className="mb-20 md:mb-0">
                             <button
                                 className="text-lg font-light outline-none focus:outline-none transform transition-all hover:scale-110 text-brand hover:text-complement"
-                                onClick={() => window.history.back()}
+                                onClick={handleGoBack}
                             >
                                 <i className="mdi mdi-arrow-left mr-2"></i>Go
                                 Back

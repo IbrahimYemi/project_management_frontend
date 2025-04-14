@@ -12,7 +12,6 @@ export const handleMutationError = (error: AxiosError<ApiErrorResponse>) => {
             },
         )
     } else {
-        console.error(error.response || 'error request')
         toast.error(
             error.response?.data?.message ||
                 'Something went wrong. Please try again later.',

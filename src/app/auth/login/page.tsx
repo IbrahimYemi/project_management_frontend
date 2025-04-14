@@ -3,7 +3,7 @@
 import LoginScreen from '@/screens/auth/LoginScreen'
 import Link from 'next/link'
 import { GalleryVerticalEnd } from 'lucide-react'
-import GuestLayout from '@/components/layout.tsx/GuestLayout'
+import GuestLayout from '@/components/layouts/GuestLayout'
 
 export default function LoginPage() {
     return (

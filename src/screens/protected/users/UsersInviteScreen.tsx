@@ -2,23 +2,29 @@
 'use client'
 
 import AppLayout from '@/components/app/AppLayout'
-import Error from '@/components/cards/error'
+import ErrorPage from '@/components/cards/ErrorPage'
 import InvitationsTableComponent from '@/components/cards/InviteTable'
 import { useInvitedUsers } from '@/hooks/users/useInvitedUsers'
+import { useUserInvitedActions } from '@/hooks/users/useUserInvitedActions'
+import { useAppDispatch } from '@/store/hooks'
+import { setAppState } from '@/store/slices/appStateSlice'
 import { useCallback } from 'react'
 
 export default function UsersInviteScreen() {
+    const dispatch = useAppDispatch()
     const {
         data: invitations,
         totalPages,
         currentPage,
         setCurrentPage,
-        setSearchQuery,
+        handleSearchQuery,
         setPerPage,
         refetch,
         isLoading,
         isError,
     } = useInvitedUsers()
+
+    const { reinviteUser, deleteUser } = useUserInvitedActions()
 
     // Function to handle fetching users with pagination
     const handleFetchUsers = useCallback(
@@ -30,16 +36,21 @@ export default function UsersInviteScreen() {
     )
 
     const handleSetSearchQuery = async (query: string) => {
-        setSearchQuery(query)
+        handleSearchQuery(query)
         refetch()
     }
 
     if (isError) {
-        return <Error />
+        return <ErrorPage />
     }
 
     const handleInviteActions = (type: 'delete' | 'resend', id: string) => {
-        console.log(`${type}d the ${id}`)
+        dispatch(setAppState('isRequesting'))
+        if (type === 'resend') {
+            reinviteUser(id)
+        } else {
+            deleteUser(id)
+        }
     }
 
     return (

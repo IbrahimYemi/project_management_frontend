@@ -21,6 +21,7 @@ import { validateEmail } from '@/lib/fn/emailValidator'
 import { Loader } from 'lucide-react'
 import { useRequestLoginToken } from '@/hooks/auth/useRequestLoginToken'
 import { useLoginPassword, useLoginToken } from '@/hooks/auth/authHooks'
+import { RequestTokenButton } from './RequestTokenButton'
 
 export function LoginForm({
     className,
@@ -55,7 +56,6 @@ export function LoginForm({
         if (method === 'password') {
             setLoginToken('')
         } else {
-            request({ email })
             setPassword('')
         }
     }
@@ -66,6 +66,10 @@ export function LoginForm({
 
     function handleLoginToken(values: LoginTokenParams) {
         loginWithToken(values)
+    }
+
+    function handleRequestToken(email: string) {
+        request({ email })
     }
 
     const submitForm = (event: FormEvent<HTMLFormElement>) => {
@@ -106,6 +110,7 @@ export function LoginForm({
                                         type="email"
                                         value={email}
                                         placeholder="m@example.com"
+                                        className="text-white"
                                         onChange={handleEmailChange}
                                         required
                                         autoFocus
@@ -207,32 +212,33 @@ export function LoginForm({
 
                                 {/* Auth Method Toggle */}
                                 {emailValid && email.length > 0 && (
-                                    <div className="relative w-full flex justify-end -mt-5">
-                                        {isTokenLoading ? (
-                                            <button
-                                                type="button"
-                                                className="bg-none text-xs self-end p-2 outline-none focus:outline-none"
-                                            >
-                                                Requesting...
-                                            </button>
-                                        ) : (
-                                            <button
-                                                type="button"
-                                                className="bg-none text-xs self-end p-2 outline-none focus:outline-none"
-                                                onClick={() =>
-                                                    handleLoginMethod(
-                                                        authMethod ===
-                                                            'password'
-                                                            ? 'token'
-                                                            : 'password',
-                                                    )
-                                                }
-                                            >
-                                                {authMethod === 'password'
-                                                    ? 'login with token'
-                                                    : 'login with password'}
-                                            </button>
-                                        )}
+                                    <div className="flex items-center justify-between -mt-5">
+                                        <RequestTokenButton
+                                            email={email}
+                                            authMethod={authMethod}
+                                            onRequest={handleRequestToken}
+                                            isLoading={isTokenLoading}
+                                        />
+                                        <div className="relative w-full flex justify-end">
+                                            {!isTokenLoading && (
+                                                <button
+                                                    type="button"
+                                                    className="bg-none text-xs self-end p-2 outline-none focus:outline-none"
+                                                    onClick={() =>
+                                                        handleLoginMethod(
+                                                            authMethod ===
+                                                                'password'
+                                                                ? 'token'
+                                                                : 'password',
+                                                        )
+                                                    }
+                                                >
+                                                    {authMethod === 'password'
+                                                        ? 'login with token'
+                                                        : 'login with password'}
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                 )}
                             </div>
@@ -252,7 +258,7 @@ export function LoginForm({
                 </CardContent>
             </Card>
             <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
-                By clicking continue, you agree to our{' '}
+                By clicking login, you agree to our{' '}
                 <a href="#">Terms of Service</a> and{' '}
                 <a href="#">Privacy Policy</a>.
             </div>

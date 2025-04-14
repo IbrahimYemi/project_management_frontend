@@ -25,3 +25,20 @@ export type ApiAuthResponse = ApiSuccessResponse & {
     data: User
     loginAt: string
 }
+
+export type FormDispatchedTypes =
+    | null
+    | 'users-invite'
+    | 'create-project'
+    | 'edit-project'
+    | 'create-team'
+    | 'edit-team'
+    | 'create-schedule'
+    | 'edit-schedule'
+    | 'create-note'
+    | 'edit-note'
+    | 'task'
+    | 'project'
+    | 'user'
+    | 'discussion'
+    | 'taskFile'

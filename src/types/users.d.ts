@@ -10,6 +10,14 @@ export type ApiUsersResponse = ApiSuccessResponse & {
     data: ApiUsersResponseData
 }
 
+export type ApiAllUsersResponse = ApiSuccessResponse & {
+    data: User[]
+}
+
+export type ApiGetUserResponse = ApiSuccessResponse & {
+    data: User
+}
+
 export type ApiInvitedUsersResponse = ApiSuccessResponse & {
     data: ApiInvitedUsersResponseData
 }
@@ -31,3 +39,11 @@ export type InviteUserParam = {
     email: string
     name: string
 }
+
+export type UserActionsType =
+    | 'delete'
+    | 'restrict'
+    | 'activate'
+    | 'make-admin'
+    | 'make-teamlead'
+    | 'make-member'

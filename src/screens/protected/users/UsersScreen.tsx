@@ -2,22 +2,30 @@
 'use client'
 
 import AppLayout from '@/components/app/AppLayout'
-import Error from '@/components/cards/error'
+import ErrorPage from '@/components/cards/ErrorPage'
 import UserManagementTable from '@/components/cards/UsersTable'
+import { useUserActions } from '@/hooks/users/useUserActions'
 import { useUsers } from '@/hooks/users/useUsers'
+import { useAppDispatch } from '@/store/hooks'
+import { setAppState } from '@/store/slices/appStateSlice'
+import { UserActionsType } from '@/types/users'
 import { useCallback } from 'react'
 
 export default function UserScreen() {
+    const dispatch = useAppDispatch()
     const {
         data: users,
         totalPages,
         currentPage,
         setCurrentPage,
-        setSearchQuery,
+        handleSearchQuery,
         setPerPage,
         isLoading,
         isError,
     } = useUsers()
+
+    const { restrictUser, activateUser, deleteUser, changeUserRole } =
+        useUserActions()
 
     // Function to handle fetching users with pagination
     const handleFetchUsers = useCallback(
@@ -28,19 +36,29 @@ export default function UserScreen() {
         [],
     )
 
-    const handleSetSearchQuery = useCallback(async (query: string) => {
-        setSearchQuery(query)
-    }, [])
-
-    if (isError) {
-        return <Error />
+    const handleSetSearchQuery = async (query: string) => {
+        handleSearchQuery(query)
     }
 
-    const handleUserActions = (
-        type: 'delete' | 'restrict' | 'activate',
-        id: string,
-    ) => {
-        console.log(`${type}d the ${id}`)
+    if (isError) {
+        return <ErrorPage />
+    }
+
+    const handleUserActions = (type: UserActionsType, id: string) => {
+        dispatch(setAppState('isRequesting'))
+        if (type === 'restrict') {
+            restrictUser(id)
+        } else if (type === 'activate') {
+            activateUser(id)
+        } else if (type === 'make-admin') {
+            changeUserRole({ id, type })
+        } else if (type === 'make-teamlead') {
+            changeUserRole({ id, type })
+        } else if (type === 'make-member') {
+            changeUserRole({ id, type })
+        } else {
+            deleteUser(id)
+        }
     }
 
     return (
@@ -51,9 +69,7 @@ export default function UserScreen() {
                 totalPages={totalPages}
                 perPage={10}
                 onFetchUsers={handleFetchUsers}
-                onDelete={id => handleUserActions('delete', id)}
-                onRestrict={id => handleUserActions('restrict', id)}
-                onActivate={id => handleUserActions('activate', id)}
+                handleUserActions={(type, id) => handleUserActions(type, id)}
                 onSearchQuery={handleSetSearchQuery}
             />
         </AppLayout>

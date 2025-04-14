@@ -8,20 +8,23 @@ import {
     ColumnDef,
 } from '@tanstack/react-table'
 import {
-    ArrowLeft,
-    ArrowRight,
     ChevronDown,
     ChevronUp,
     LockKeyhole,
     LockKeyholeOpenIcon,
-    Trash2,
+    Trash,
+    User2,
+    UserPen,
+    UserPlus,
 } from 'lucide-react'
 import { User } from '@/types/authTypes'
 import Avatar from '../ui/Avatar'
 import SearchInput from './SearchInput'
 import Link from 'next/link'
 import EmptyTable from './EmptyTable'
-import { USERS_SEARCH_INPUT_STORAGE_KEY } from '@/store/constants'
+import { STORAGE_KEYS } from '@/store/constants'
+import PaginationControl from './PaginationControl'
+import { UserActionsType } from '@/types/users'
 
 type UserManagementTableProps = {
     users: User[]
@@ -29,9 +32,7 @@ type UserManagementTableProps = {
     totalPages: number
     perPage: number
     onFetchUsers: (page: number, perPage: number) => void
-    onDelete: (id: string) => void
-    onRestrict: (id: string) => void
-    onActivate: (id: string) => void
+    handleUserActions: (type: UserActionsType, id: string) => void
     onSearchQuery: (searchQuery: string) => Promise<void>
 }
 
@@ -41,9 +42,7 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
     totalPages,
     perPage,
     onFetchUsers,
-    onDelete,
-    onRestrict,
-    onActivate,
+    handleUserActions,
     onSearchQuery,
 }) => {
     const [globalFilter, setGlobalFilter] = useState<string | undefined>(
@@ -65,13 +64,13 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
             },
             { accessorKey: 'name', header: 'Name' },
             { accessorKey: 'email', header: 'Email' },
-            { accessorKey: 'role', header: 'Role' },
+            { accessorKey: 'app_role', header: 'Role' },
             {
                 accessorKey: 'isActive',
                 header: 'Status',
                 cell: ({ row }) => (
                     <span
-                        className={`px-2 py-1 text-xs rounded ${
+                        className={`px-2 py-1 text-xs rounded-md ${
                             row.original.isActive
                                 ? 'bg-green-500 text-white'
                                 : 'bg-red-500 text-white'
@@ -84,30 +83,86 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
             {
                 id: 'actions',
                 header: 'Actions',
-                cell: ({ row }) => (
-                    <div className="flex gap-2">
-                        <button
-                            className="px-3 py-1 text-sm bg-red-500 text-white rounded"
-                            onClick={() => onDelete(row.original.id)}
-                        >
-                            <Trash2 />
-                        </button>
-                        <button
-                            className="px-3 py-1 text-sm bg-yellow-500 text-white rounded"
-                            onClick={() => onRestrict(row.original.id)}
-                            disabled={!row.original.isActive}
-                        >
-                            <LockKeyhole />
-                        </button>
-                        <button
-                            className="px-3 py-1 text-sm bg-green-500 text-white rounded"
-                            onClick={() => onActivate(row.original.id)}
-                            disabled={row.original.isActive}
-                        >
-                            <LockKeyholeOpenIcon />
-                        </button>
-                    </div>
-                ),
+                cell: ({ row }) => {
+                    const user = row.original
+                    const currentRole = user.app_role?.toLowerCase()
+
+                    return (
+                        <div className="flex gap-2">
+                            {currentRole !== 'super admin' &&
+                                currentRole !== 'admin' && (
+                                    <button
+                                        className="px-2 py-1 text-xs bg-blue-600 text-white rounded"
+                                        onClick={() =>
+                                            handleUserActions(
+                                                'make-admin',
+                                                user.id,
+                                            )
+                                        }
+                                        title="Make Admin"
+                                    >
+                                        <UserPlus />
+                                    </button>
+                                )}
+                            {currentRole !== 'super admin' &&
+                                currentRole !== 'teamlead' && (
+                                    <button
+                                        className="px-2 py-1 text-xs bg-indigo-600 text-white rounded"
+                                        onClick={() =>
+                                            handleUserActions(
+                                                'make-teamlead',
+                                                user.id,
+                                            )
+                                        }
+                                        title="Make Team Lead"
+                                    >
+                                        <UserPen />
+                                    </button>
+                                )}
+                            {currentRole !== 'super admin' &&
+                                currentRole !== 'member' && (
+                                    <button
+                                        className="px-2 py-1 text-xs bg-gray-700 text-white rounded"
+                                        onClick={() =>
+                                            handleUserActions(
+                                                'make-member',
+                                                user.id,
+                                            )
+                                        }
+                                        title="Make Member"
+                                    >
+                                        <User2 />
+                                    </button>
+                                )}
+                            <button
+                                className={`px-3 py-1 text-sm bg-yellow-500 text-white rounded disabled:opacity-50`}
+                                onClick={() =>
+                                    handleUserActions('restrict', user.id)
+                                }
+                                disabled={!user.isActive}
+                            >
+                                <LockKeyhole />
+                            </button>
+                            <button
+                                className={`px-3 py-1 text-sm bg-green-500 text-white rounded disabled:opacity-50`}
+                                onClick={() =>
+                                    handleUserActions('activate', user.id)
+                                }
+                                disabled={user.isActive}
+                            >
+                                <LockKeyholeOpenIcon />
+                            </button>
+                            <button
+                                className="px-3 py-1 text-sm bg-red-500 text-white rounded"
+                                onClick={() =>
+                                    handleUserActions('delete', user.id)
+                                }
+                            >
+                                <Trash />
+                            </button>
+                        </div>
+                    )
+                },
             },
         ],
         [],
@@ -124,18 +179,18 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
 
     return (
         <div className="p-2 md:p-6 bg-baseColor w-full text-white rounded-md shadow-md">
-            <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold mb-4">User Management</h2>
+            <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">User Management</h2>
                 <Link
                     href="/users/invites"
-                    className="bg-brand text-white rounded-md text-center py-0.5 px-2"
+                    className="bg-emerald-600 text-white rounded-md text-center py-0.5 px-2"
                 >
                     Invites
                 </Link>
             </div>
             <div className="flex items-center bg-gray-700 md:w-2/5 mb-2 text-baseText border rounded">
                 <SearchInput
-                    storageKey={USERS_SEARCH_INPUT_STORAGE_KEY}
+                    storageKey={STORAGE_KEYS.USERS_SEARCH_INPUT}
                     onSearch={onSearchQuery}
                 />
             </div>
@@ -197,93 +252,13 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
                     </tbody>
                 </table>
             </div>
-            {/* Pagination Controls */}
-            <div className="flex flex-col md:flex-row items-start md:justify-between md:items-center mt-4 text-xs md:text-sm gap-2 p-2 md:p-4 border-t">
-                {/* Left: Page Details & Per Page Selection */}
-                <div className="flex items-center space-x-4">
-                    <span className="text-titleText">
-                        Page {currentPage} of {totalPages}
-                    </span>
-                </div>
-
-                {/* Right: Pagination Controls */}
-                <div className="flex items-center space-x-2">
-                    {/* Previous Button */}
-                    <button
-                        disabled={currentPage === 1}
-                        onClick={() => onFetchUsers(currentPage - 1, perPage)}
-                        className="md:px-4 px-2 md:py-2 py-1 bg-gray-600 text-white rounded disabled:bg-gray-300"
-                    >
-                        <ArrowLeft />
-                    </button>
-
-                    {/* Page Numbers with Dynamic Display */}
-                    {currentPage > 3 && (
-                        <>
-                            <button
-                                onClick={() => onFetchUsers(1, perPage)}
-                                className="px-3 py-1 bg-teal-800 rounded"
-                            >
-                                1
-                            </button>
-                            {currentPage > 4 && (
-                                <span className="px-2">...</span>
-                            )}
-                        </>
-                    )}
-
-                    {[...Array(totalPages)].map((_, index) => {
-                        const page = index + 1
-                        if (
-                            page === currentPage ||
-                            page === currentPage - 1 ||
-                            page === currentPage - 2 ||
-                            page === currentPage + 1 ||
-                            page === currentPage + 2
-                        ) {
-                            return (
-                                <button
-                                    key={page}
-                                    onClick={() => onFetchUsers(page, perPage)}
-                                    className={`px-3 py-1 rounded ${
-                                        currentPage === page
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-teal-800'
-                                    }`}
-                                >
-                                    {page}
-                                </button>
-                            )
-                        }
-                        return null
-                    })}
-
-                    {currentPage < totalPages - 2 && (
-                        <>
-                            {currentPage < totalPages - 3 && (
-                                <span className="px-2">...</span>
-                            )}
-                            <button
-                                onClick={() =>
-                                    onFetchUsers(totalPages, perPage)
-                                }
-                                className="px-3 py-1 bg-teal-800 rounded"
-                            >
-                                {totalPages}
-                            </button>
-                        </>
-                    )}
-
-                    {/* Next Button */}
-                    <button
-                        disabled={currentPage === totalPages}
-                        onClick={() => onFetchUsers(currentPage + 1, perPage)}
-                        className="md:px-4 px-2 md:py-2 py-1 bg-gray-600 text-white rounded disabled:bg-gray-300"
-                    >
-                        <ArrowRight />
-                    </button>
-                </div>
-            </div>
+            {/* Pagination Component */}
+            <PaginationControl
+                currentPage={currentPage}
+                totalPages={totalPages}
+                perPage={perPage}
+                onPageChange={onFetchUsers}
+            />
         </div>
     )
 }

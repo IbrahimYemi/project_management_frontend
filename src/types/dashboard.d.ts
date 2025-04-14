@@ -1,4 +1,6 @@
 import { ApiSuccessResponse } from './generic'
+import { Schedule } from './schedule'
+import { Team } from './teams'
 
 export type Project = {
     name: string
@@ -15,23 +17,7 @@ export type Task = {
     owner: string
 }
 
-export type Meeting = {
-    agenda: string
-    date: string
-    time: string
-}
-
-export type TeamMember = {
-    name: string
-    avatar: string
-}
-
-export type Team = {
-    name: string
-    teamLead: string
-    members: number
-    projectCount: number
-}
+export type Meeting = Schedule
 
 export type ProjectLineChartProps = {
     title?: string

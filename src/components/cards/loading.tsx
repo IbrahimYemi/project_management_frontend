@@ -1,6 +1,16 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect } from 'react'
 
 export default function Loading() {
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            window.location.reload()
+        }, 60000)
+
+        return () => clearTimeout(timeout)
+    }, [])
+
     return (
         <div className="flex items-center justify-center w-full h-[100vh] text-baseText  bg-gray-950">
             <div>

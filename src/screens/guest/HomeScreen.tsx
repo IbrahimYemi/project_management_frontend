@@ -1,6 +1,27 @@
+'use client'
+
+import Loading from '@/components/cards/loading'
+import { appStorage } from '@/lib/generic.fn'
+import { STORAGE_KEYS } from '@/store/constants'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export default function HomeScreen() {
+    const token = appStorage.retrieve(STORAGE_KEYS.AUTH_TOKEN)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        if (token) {
+            setLoading(false)
+        }
+
+        setLoading(false)
+    }, [token])
+
+    if (loading) {
+        return <Loading />
+    }
+
     return (
         <div className="bg-gray-50">
             {/* Hero Section */}
@@ -13,25 +34,36 @@ export default function HomeScreen() {
                     meetings, and get work done faster – all in one place.
                 </p>
                 <div className="space-x-4">
-                    <Link
-                        href="/auth/register"
-                        className="px-8 py-3 bg-white text-purple-800 font-semibold rounded-full shadow-lg transition transform hover:scale-105 hover:bg-gray-100"
-                    >
-                        Get Started
-                    </Link>
-                    <Link
-                        href="/auth/login"
-                        className="px-8 py-3 bg-purple-950 text-white font-semibold rounded-full shadow-lg transition transform hover:scale-105 hover:bg-purple-600"
-                    >
-                        Login
-                    </Link>
+                    {token ? (
+                        <Link
+                            href="/dashboard"
+                            className="px-8 py-3 bg-white text-green-400 font-semibold rounded-full shadow-lg transition transform hover:scale-105 hover:bg-gray-100"
+                        >
+                            Dashboard
+                        </Link>
+                    ) : (
+                        <>
+                            <Link
+                                href="/auth/register"
+                                className="px-8 py-3 bg-white text-green-400 font-semibold rounded-full shadow-lg transition transform hover:scale-105 hover:bg-gray-100"
+                            >
+                                Get Started
+                            </Link>
+                            <Link
+                                href="/auth/login"
+                                className="px-8 py-3 bg-green-700 text-white font-semibold rounded-full shadow-lg transition transform hover:scale-105 hover:bg-green-400"
+                            >
+                                Login
+                            </Link>
+                        </>
+                    )}
                 </div>
             </section>
 
             {/* Features Section */}
             <section className="py-20 px-6 bg-white text-gray-900">
                 <div className="max-w-6xl mx-auto text-center">
-                    <h2 className="text-4xl font-extrabold mb-12 text-purple-800">
+                    <h2 className="text-4xl font-extrabold mb-12 text-green-400">
                         Key Features
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -75,12 +107,12 @@ export default function HomeScreen() {
                         ].map((feature, index) => (
                             <div
                                 key={index}
-                                className="p-6 bg-gray-50 border border-purple-100 rounded-lg shadow-md transform transition hover:-translate-y-2 hover:shadow-lg"
+                                className="p-6 bg-gray-50 border border-green-100 rounded-md shadow-md transform transition hover:-translate-y-2 hover:shadow-lg"
                             >
                                 <div className="text-4xl mb-4">
                                     {feature.icon}
                                 </div>
-                                <h3 className="text-2xl font-bold mb-2 text-purple-700">
+                                <h3 className="text-2xl font-bold mb-2 text-green-700">
                                     {feature.title}
                                 </h3>
                                 <p className="text-gray-600">
@@ -102,14 +134,14 @@ export default function HomeScreen() {
                 </p>
                 <Link
                     href="/auth/register"
-                    className="px-8 py-3 bg-white text-purple-900 font-semibold rounded-full shadow-lg transition transform hover:scale-105 hover:bg-gray-100"
+                    className="px-8 py-3 bg-white text-green-900 font-semibold rounded-full shadow-lg transition transform hover:scale-105 hover:bg-gray-100"
                 >
                     Get Started Now
                 </Link>
             </section>
 
             {/* Footer */}
-            <footer className="py-6 bg-black text-center text-baseText">
+            <footer className="py-6 bg-baseColor text-center text-baseText">
                 <p>
                     &copy; {new Date().getFullYear()} Project Manager. All
                     rights reserved.

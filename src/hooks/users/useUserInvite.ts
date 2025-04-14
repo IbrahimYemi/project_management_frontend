@@ -1,13 +1,15 @@
 import { ApiErrorResponse, ApiNoResponse } from '@/types/generic'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
-
 import { toast } from 'react-toastify'
 import { handleMutationError } from '@/lib/fn/handleMutationError'
 import { inviteUser } from '@/lib/fn/users'
 import { InviteUserParam } from '@/types/users'
+import { QUERY_KEYS } from '@/store/constants'
 
 export const useUserInvite = () => {
+    const queryClient = useQueryClient()
+
     const mutation = useMutation<
         ApiNoResponse,
         AxiosError<ApiErrorResponse>,
@@ -17,14 +19,18 @@ export const useUserInvite = () => {
         onError: handleMutationError,
         onSuccess: data => {
             toast.success(data.message || 'Invite sent!')
+
+            queryClient.invalidateQueries({
+                queryKey: [QUERY_KEYS.USERS.INVITED],
+            })
         },
     })
 
     return {
-        request: mutation.mutate,
-        isRequestLoading: mutation.isPending,
-        isRequestError: mutation.isError,
-        isRequestSuccess: mutation.isSuccess,
+        inviteUser: mutation.mutate,
+        isInviteLoading: mutation.isPending,
+        isInviteError: mutation.isError,
+        isInviteSuccess: mutation.isSuccess,
         data: mutation.data,
     }
 }

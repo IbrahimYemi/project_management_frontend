@@ -14,9 +14,18 @@ import {
 import { useLogout } from '@/hooks/auth/useLogout'
 import { useAppDispatch } from '@/store/hooks'
 import { setAppState } from '@/store/slices/appStateSlice'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
-export default function UserDetails({ authUser }: { authUser: User | null }) {
+export default function UserDetails({
+    authUser,
+    notificationCount,
+}: {
+    authUser: User | null
+    notificationCount: number
+}) {
     const { logout, isPending } = useLogout()
+    const router = useRouter()
     const dispatch = useAppDispatch()
     const [isOpen, setIsOpen] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
@@ -78,30 +87,54 @@ export default function UserDetails({ authUser }: { authUser: User | null }) {
                     >
                         <ul className="space-y-2 border border-complement rounded-md p-2 inset-0">
                             {/* Account */}
-                            <li className="flex items-center gap-2 p-2 hover:bg-baseText hover:text-baseColor cursor-pointer rounded">
-                                <UserIcon size={16} className="text-gray-600" />
-                                <span className="text-sm">Account</span>
+                            <li>
+                                <Link
+                                    href="/settings?tab=account"
+                                    className="flex items-center gap-2 p-2 hover:bg-baseText hover:text-baseColor cursor-pointer rounded"
+                                >
+                                    <UserIcon
+                                        size={16}
+                                        className="text-gray-600"
+                                    />
+                                    <span className="text-sm">Account</span>
+                                </Link>
                             </li>
 
                             {/* Notifications */}
-                            <li className="flex items-center gap-2 p-2 hover:bg-baseText hover:text-baseColor cursor-pointer rounded relative">
+                            <li
+                                onClick={() =>
+                                    router.push(
+                                        '?notifications=true',
+                                        undefined,
+                                    )
+                                }
+                                className="flex items-center gap-2 p-2 hover:bg-baseText hover:text-baseColor cursor-pointer rounded-md relative"
+                            >
                                 <Bell size={16} className="text-gray-600" />
                                 <span className="text-sm">Notifications</span>
                                 <span className="absolute right-3 top-1 text-xs bg-red-500 text-white px-2 py-0.5 rounded-full">
-                                    3
+                                    {notificationCount}
                                 </span>
                             </li>
 
                             {/* Settings */}
-                            <li className="flex items-center gap-2 p-2 hover:bg-baseText hover:text-baseColor cursor-pointer rounded">
-                                <Settings size={16} className="text-gray-600" />
-                                <span className="text-sm">Settings</span>
+                            <li>
+                                <Link
+                                    href="/settings?tab=profile"
+                                    className="flex items-center gap-2 p-2 hover:bg-baseText hover:text-baseColor cursor-pointer rounded"
+                                >
+                                    <Settings
+                                        size={16}
+                                        className="text-gray-600"
+                                    />
+                                    <span className="text-sm">Settings</span>
+                                </Link>
                             </li>
 
                             {/* Logout */}
                             <li
                                 onClick={() => handleLogout()}
-                                className="flex items-center gap-2 p-2 cursor-pointer rounded text-red-600"
+                                className="flex items-center gap-2 p-2 cursor-pointer rounded-md text-red-600"
                             >
                                 <LogOut size={16} />
                                 <span className="text-sm">Logout</span>

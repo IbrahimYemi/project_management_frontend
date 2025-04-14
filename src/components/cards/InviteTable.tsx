@@ -8,18 +8,19 @@ import {
     ColumnDef,
 } from '@tanstack/react-table'
 import {
-    ArrowLeft,
-    ArrowRight,
     ChevronDown,
     ChevronUp,
     PlusCircleIcon,
     RotateCcw,
-    Trash2,
+    Trash,
 } from 'lucide-react'
 import SearchInput from './SearchInput'
 import { Invitation } from '@/types/users'
 import EmptyTable from './EmptyTable'
-import { INVITE_SEARCH_INPUT_STORAGE_KEY } from '@/store/constants'
+import { STORAGE_KEYS } from '@/store/constants'
+import PaginationControl from './PaginationControl'
+import FormDispatcher from '../ui/FormDispatcher'
+import DeleteButton from '../ui/DeleteButton'
 
 type InvitationsTableComponentProps = {
     invitations: Invitation[]
@@ -56,7 +57,7 @@ const InvitationsTableComponent: React.FC<InvitationsTableComponentProps> = ({
                 header: 'Status',
                 cell: ({ row }) => (
                     <span
-                        className={`px-2 py-1 text-xs rounded ${
+                        className={`px-2 py-1 text-xs rounded-md ${
                             row.original.is_accepted
                                 ? 'bg-green-500 text-white'
                                 : 'bg-red-500 text-white'
@@ -86,12 +87,12 @@ const InvitationsTableComponent: React.FC<InvitationsTableComponentProps> = ({
                                 <RotateCcw size={16} />
                             </button>
                         )}
-                        <button
-                            className="px-3 py-1 text-sm bg-red-500 text-white rounded"
+                        <DeleteButton
+                            classNames="px-3 py-1 text-sm bg-red-500 text-white rounded"
                             onClick={() => onDelete(row.original.id)}
-                        >
-                            <Trash2 size={16} />
-                        </button>
+                            text={<Trash size={16} />}
+                            confirmStatement="Are you sure you want to delete this invitation?"
+                        />
                     </div>
                 ),
             },
@@ -111,17 +112,24 @@ const InvitationsTableComponent: React.FC<InvitationsTableComponentProps> = ({
     return (
         <div className="p-2 md:p-6 bg-baseColor w-full text-white rounded-md shadow-md">
             <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold mb-4">
+                <h2 className="text-xl font-semibold">
                     Invitations Management
                 </h2>
-                <button className="bg-brand flex items-center gap-1 text-sm md:text-base text-white rounded-md text-center py-0.5 px-2">
-                    <PlusCircleIcon className="size-3" /> <h3>Invite</h3>
-                </button>
+                <FormDispatcher
+                    text={
+                        <>
+                            <PlusCircleIcon className="size-3" />
+                            <h3>Invite</h3>
+                        </>
+                    }
+                    type={'users-invite'}
+                    classNames="bg-emerald-600 flex items-center gap-1 text-sm md:text-base text-white rounded-md text-center py-1 px-3"
+                />
             </div>
             <div className="flex items-center bg-gray-700 md:w-2/5 mb-2 text-baseText border rounded">
                 <SearchInput
                     onSearch={onSearchQuery}
-                    storageKey={INVITE_SEARCH_INPUT_STORAGE_KEY}
+                    storageKey={STORAGE_KEYS.INVITE_SEARCH_INPUT}
                 />
             </div>
             <div className="w-full overflow-x-auto">
@@ -182,95 +190,13 @@ const InvitationsTableComponent: React.FC<InvitationsTableComponentProps> = ({
                     </tbody>
                 </table>
             </div>
-            {/* Pagination Controls */}
-            <div className="flex flex-col md:flex-row items-start md:justify-between md:items-center mt-4 text-xs md:text-sm gap-2 p-2 md:p-4 border-t">
-                {/* Left: Page Details & Per Page Selection */}
-                <div className="flex items-center space-x-4">
-                    <span className="text-titleText">
-                        Page {currentPage} of {totalPages}
-                    </span>
-                </div>
-
-                {/* Right: Pagination Controls */}
-                <div className="flex items-center space-x-2">
-                    {/* Previous Button */}
-                    <button
-                        disabled={currentPage === 1}
-                        onClick={() => onFetchInvites(currentPage - 1, perPage)}
-                        className="md:px-4 px-2 md:py-2 py-1 bg-gray-600 text-white rounded disabled:bg-gray-300"
-                    >
-                        <ArrowLeft />
-                    </button>
-
-                    {/* Page Numbers with Dynamic Display */}
-                    {currentPage > 3 && (
-                        <>
-                            <button
-                                onClick={() => onFetchInvites(1, perPage)}
-                                className="px-3 py-1 bg-teal-800 rounded"
-                            >
-                                1
-                            </button>
-                            {currentPage > 4 && (
-                                <span className="px-2">...</span>
-                            )}
-                        </>
-                    )}
-
-                    {[...Array(totalPages)].map((_, index) => {
-                        const page = index + 1
-                        if (
-                            page === currentPage ||
-                            page === currentPage - 1 ||
-                            page === currentPage - 2 ||
-                            page === currentPage + 1 ||
-                            page === currentPage + 2
-                        ) {
-                            return (
-                                <button
-                                    key={page}
-                                    onClick={() =>
-                                        onFetchInvites(page, perPage)
-                                    }
-                                    className={`px-3 py-1 rounded ${
-                                        currentPage === page
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-teal-800'
-                                    }`}
-                                >
-                                    {page}
-                                </button>
-                            )
-                        }
-                        return null
-                    })}
-
-                    {currentPage < totalPages - 2 && (
-                        <>
-                            {currentPage < totalPages - 3 && (
-                                <span className="px-2">...</span>
-                            )}
-                            <button
-                                onClick={() =>
-                                    onFetchInvites(totalPages, perPage)
-                                }
-                                className="px-3 py-1 bg-teal-800 rounded"
-                            >
-                                {totalPages}
-                            </button>
-                        </>
-                    )}
-
-                    {/* Next Button */}
-                    <button
-                        disabled={currentPage === totalPages}
-                        onClick={() => onFetchInvites(currentPage + 1, perPage)}
-                        className="md:px-4 px-2 md:py-2 py-1 bg-gray-600 text-white rounded disabled:bg-gray-300"
-                    >
-                        <ArrowRight />
-                    </button>
-                </div>
-            </div>
+            {/* Pagination Component */}
+            <PaginationControl
+                currentPage={currentPage}
+                totalPages={totalPages}
+                perPage={perPage}
+                onPageChange={onFetchInvites}
+            />
         </div>
     )
 }

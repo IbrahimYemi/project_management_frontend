@@ -19,5 +19,5 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
         return <Loading />
     }
 
-    return <>{children}</>
+    return <div className="relative">{children}</div>
 }

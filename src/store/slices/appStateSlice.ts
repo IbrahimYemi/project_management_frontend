@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type AppStateProps = {
-    appState: 'isLoading' | 'isError' | 'isSuccess' | 'isIdle'
+    appState: 'isLoading' | 'isError' | 'isSuccess' | 'isIdle' | 'isRequesting'
 }
 
 const initialState: AppStateProps = {

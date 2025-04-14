@@ -3,7 +3,7 @@
 import { GalleryVerticalEnd } from 'lucide-react'
 import { ForgotPasswordScreen } from '@/screens/auth/ForgotPasswordScreen'
 import Link from 'next/link'
-import GuestLayout from '@/components/layout.tsx/GuestLayout'
+import GuestLayout from '@/components/layouts/GuestLayout'
 
 export default function ForgotPasswordPage() {
     return (

@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
 import { useAppDispatch } from '@/store/hooks'
 import { setUser } from '@/store/slices/authSlice'
-import { AUTH_USER_QUERY_KEY } from '@/store/constants'
+import { QUERY_KEYS } from '@/store/constants'
 import { ApiErrorResponse, ApiAuthResponse } from '@/types/generic'
 import { handleMutationError } from '@/lib/fn/handleMutationError'
 import { persistAppUser } from '@/lib/generic.fn'
@@ -31,7 +31,7 @@ const useAuthMutation = <TVariables>(
                 dispatch(setUser(data.data))
             }
 
-            queryClient.invalidateQueries({ queryKey: AUTH_USER_QUERY_KEY })
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.AUTH_USER] })
 
             if (onSuccessRedirectPath) {
                 router.push(onSuccessRedirectPath)
