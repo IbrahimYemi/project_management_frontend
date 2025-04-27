@@ -107,7 +107,7 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
                                     </button>
                                 )}
                             {currentRole !== 'super admin' &&
-                                currentRole !== 'teamlead' && (
+                                currentRole !== 'team lead' && (
                                     <button
                                         className="px-2 py-1 text-xs bg-indigo-600 text-white rounded"
                                         onClick={() =>
