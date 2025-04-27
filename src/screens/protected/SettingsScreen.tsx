@@ -4,10 +4,11 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import AppLayout from '@/components/app/AppLayout'
 import AccountSettings from '@/components/settings/AccountSettings'
 import ProfileSettings from '@/components/settings/ProfileSettings'
-import React from 'react'
+import React, { Suspense } from 'react'
 import PersonalNotes from '@/components/settings/PersonalNotes'
 import { useAppSelector } from '@/store/hooks'
 import { User } from '@/types/authTypes'
+import Loading from '@/components/cards/loading'
 
 const tabs = [
     { id: 'account', label: 'Account Details' },
@@ -15,7 +16,7 @@ const tabs = [
     { id: 'note-taking', label: 'Personal Notes' },
 ]
 
-export default function SettingsScreen() {
+function SettingsContent() {
     const { user } = useAppSelector(state => state.auth)
     const searchParams = useSearchParams()
     const router = useRouter()
@@ -50,7 +51,7 @@ export default function SettingsScreen() {
                     </div>
 
                     {/* Content */}
-                    <div className="">
+                    <div>
                         {activeTab === 'account' && (
                             <AccountSettings user={user || ({} as User)} />
                         )}
@@ -60,5 +61,13 @@ export default function SettingsScreen() {
                 </div>
             </div>
         </AppLayout>
+    )
+}
+
+export default function SettingsScreen() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <SettingsContent />
+        </Suspense>
     )
 }
