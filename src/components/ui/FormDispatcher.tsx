@@ -60,7 +60,8 @@ export default function FormDispatcher({
     return (
         <button
             className={`${classNames} py-2 px-4 rounded transition`}
-            onClick={handleDispatchEvent}>
+            onClick={handleDispatchEvent}
+        >
             {text}
         </button>
     )

@@ -51,8 +51,9 @@ export default function TeamMembers({
                             href={`/users/${member.id}/view`}
                             key={member.id}
                             title={member.name}
-                            role='View User'
-                            className="flex items-center space-x-3 border-b py-2 hover:bg-gray-600 p-1 rounded-md">
+                            role="View User"
+                            className="flex items-center space-x-3 border-b py-2 hover:bg-gray-600 p-1 rounded-md"
+                        >
                             <Avatar
                                 userImage={member.avatar}
                                 username={member.name}

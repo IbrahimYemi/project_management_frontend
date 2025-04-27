@@ -11,7 +11,7 @@ export default function TeamDetailScreen({ id }: { id: string }) {
     const { data: teamDetails, isLoading, error, isError } = useFetchTeam(id)
 
     if (isError) return <ErrorPage error={error} />
-    
+
     return (
         <AppLayout isLoading={isLoading}>
             <div className=" bg-baseColor p-4 rounded-lg text-white">

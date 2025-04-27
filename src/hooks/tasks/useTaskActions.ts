@@ -34,9 +34,9 @@ export const useTaskActions = () => {
     const createTaskMutation = useMutation<
         ApiNoResponse,
         AxiosError<ApiErrorResponse>,
-        {params: CreateTaskParams}
+        { params: CreateTaskParams }
     >({
-        mutationFn: ({params}) => createTask(params),
+        mutationFn: ({ params }) => createTask(params),
         onError: error => {
             dispatch(setAppState('isIdle'))
             handleMutationError(error)
@@ -204,7 +204,9 @@ export const useTaskActions = () => {
         onSuccess: (data, { projectId }) => {
             dispatch(setAppState('isSuccess'))
             console.log(QUERY_KEYS.PROJECTS.SINGLE, projectId)
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PROJECTS.SINGLE, projectId] })
+            queryClient.invalidateQueries({
+                queryKey: [QUERY_KEYS.PROJECTS.SINGLE, projectId],
+            })
         },
     })
 

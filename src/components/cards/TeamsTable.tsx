@@ -38,7 +38,8 @@ const TeamManagementTable: React.FC<TeamManagementTableProps> = ({
                     <div className="flex gap-2">
                         <Link
                             href={`/teams/${row.original.id}`}
-                            className="px-3 py-1 text-sm bg-blue-500 text-white rounded">
+                            className="px-3 py-1 text-sm bg-blue-500 text-white rounded"
+                        >
                             View
                         </Link>
                         <DeleteButton
@@ -94,7 +95,8 @@ const TeamManagementTable: React.FC<TeamManagementTableProps> = ({
                                     <th
                                         key={header.id}
                                         className="px-4 py-2 text-left border-b cursor-pointer"
-                                        onClick={header.column.getToggleSortingHandler()}>
+                                        onClick={header.column.getToggleSortingHandler()}
+                                    >
                                         <div className="flex items-center gap-1">
                                             {flexRender(
                                                 header.column.columnDef.header,
@@ -114,7 +116,8 @@ const TeamManagementTable: React.FC<TeamManagementTableProps> = ({
                         {table.getRowModel().rows.map(row => (
                             <tr
                                 key={row.id}
-                                className="border-b hover:bg-gray-800">
+                                className="border-b hover:bg-gray-800"
+                            >
                                 {row.getVisibleCells().map(cell => (
                                     <td key={cell.id} className="px-4 py-2">
                                         {flexRender(

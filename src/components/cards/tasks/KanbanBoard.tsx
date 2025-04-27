@@ -19,15 +19,15 @@ const KanbanBoard = ({ tasks, taskStatus, onStatusChange }: Props) => {
                 task.id === id
                     ? {
                           ...task,
-                        status: {
-                            id: newStatusId,
-                            name:
-                                taskStatus.find(s => s.id === newStatusId)
-                                    ?.name || '',
-                            percentage:
-                                taskStatus.find(s => s.id === newStatusId)
-                                    ?.percentage || 0,
-                        },
+                          status: {
+                              id: newStatusId,
+                              name:
+                                  taskStatus.find(s => s.id === newStatusId)
+                                      ?.name || '',
+                              percentage:
+                                  taskStatus.find(s => s.id === newStatusId)
+                                      ?.percentage || 0,
+                          },
                       }
                     : task,
             ),

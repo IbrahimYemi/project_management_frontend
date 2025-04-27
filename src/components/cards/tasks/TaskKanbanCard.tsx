@@ -62,7 +62,8 @@ export const KanbanCard = ({ task }: { task: TaskType }) => {
             ref={drag as unknown as React.Ref<HTMLDivElement>}
             className={`p-2 bg-gray-800 text-white min-h-[12rem] rounded-md shadow-md border border-gray-700 cursor-grab transform transition-all ${
                 isDragging ? 'opacity-50 scale-95' : 'hover:shadow-lg'
-            }`}>
+            }`}
+        >
             {task?.taskImage && (
                 <Image
                     src={task?.taskImage}
@@ -93,7 +94,8 @@ export const KanbanCard = ({ task }: { task: TaskType }) => {
                             />
                             <Link
                                 href={`/tasks/${task?.id}`}
-                                className="block px-4 py-2 text-gray-300 hover:bg-gray-700">
+                                className="block px-4 py-2 text-gray-300 hover:bg-gray-700"
+                            >
                                 View
                             </Link>
                         </div>

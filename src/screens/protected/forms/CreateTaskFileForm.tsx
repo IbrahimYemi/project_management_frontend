@@ -101,7 +101,8 @@ export default function CreateTaskFileForm({
                         value={formData.type}
                         onChange={handleChange}
                         className="w-full px-3 py-2 border rounded-lg text-gray-100 bg-gray-700"
-                        required>
+                        required
+                    >
                         <option value="">Select a status</option>
                         {['image', 'docs'].map(type => (
                             <option key={type} value={type}>
@@ -114,13 +115,15 @@ export default function CreateTaskFileForm({
                     <button
                         type="button"
                         onClick={onCloseForm}
-                        className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                        className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                    >
                         Cancel
                     </button>
                     <button
                         type="submit"
                         className="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 flex items-center"
-                        disabled={isCreateTaskFileLoading}>
+                        disabled={isCreateTaskFileLoading}
+                    >
                         {isCreateTaskFileLoading && (
                             <Loader className="animate-spin mr-2" />
                         )}

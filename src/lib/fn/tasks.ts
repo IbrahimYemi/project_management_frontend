@@ -48,12 +48,17 @@ export const markTaskComplete = async (id: string) => {
 }
 
 export const fetchTaskById = async (id: string): Promise<TaskType> => {
-    const response = await apiClient.get<ApiTaskDetailsResponse>(`/api/tasks/${id}`)
+    const response = await apiClient.get<ApiTaskDetailsResponse>(
+        `/api/tasks/${id}`,
+    )
     return response.data.data
 }
 
 export const createFile = async (params: CreateTaskFileParams) => {
-    const response = await apiClient.post<ApiNoResponse>(`/api/tasks/${params.task_id}/files`, params)
+    const response = await apiClient.post<ApiNoResponse>(
+        `/api/tasks/${params.task_id}/files`,
+        params,
+    )
     return response.data
 }
 
@@ -65,7 +70,10 @@ export const deleteFile = async (id: string) => {
 }
 
 export const createDiscussion = async (params: DiscussionParams) => {
-    const response = await apiClient.post<ApiNoResponse>(`/api/tasks/${params.task_id}/discussions`, params)
+    const response = await apiClient.post<ApiNoResponse>(
+        `/api/tasks/${params.task_id}/discussions`,
+        params,
+    )
     return response.data
 }
 
@@ -76,13 +84,14 @@ export const deleteDiscussion = async (id: string) => {
     return response.data
 }
 
-export const updateStatus= async (id: string, statusId: string) => {
+export const updateStatus = async (id: string, statusId: string) => {
     const params = {
-        status_id: statusId
+        status_id: statusId,
     }
-    
+
     const response = await apiClient.put<ApiNoResponse>(
-        `/api/tasks/${id}/update/task-status`, params
+        `/api/tasks/${id}/update/task-status`,
+        params,
     )
     return response.data
 }

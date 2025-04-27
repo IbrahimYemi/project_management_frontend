@@ -10,7 +10,8 @@ export default function TaskCard({ task }: Props) {
     return (
         <div
             key={task.id}
-            className="p-4 bg-baseColor shadow-lg rounded-lg border border-brand text-white relative">
+            className="p-4 bg-baseColor shadow-lg rounded-lg border border-brand text-white relative"
+        >
             <h4 className="text-lg font-bold text-brand">{task.name}</h4>
             <p className="text-sm text-gray-300 mb-2">
                 <TruncateText text={task.description} limit={150} />
@@ -22,7 +23,8 @@ export default function TaskCard({ task }: Props) {
                 </div>
                 <Link
                     href={`/tasks/${task.id}`}
-                    className={` px-3 py-1 rounded border text-sm bg-emerald-500 text-white`}>
+                    className={` px-3 py-1 rounded border text-sm bg-emerald-500 text-white`}
+                >
                     view
                 </Link>
             </div>

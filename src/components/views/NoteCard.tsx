@@ -33,7 +33,9 @@ function NoteCard({ note }: { note: Note }) {
                 <h3 className="text-xl font-semibold mb-2 line-clamp-2">
                     {note.title}
                 </h3>
-                <p className="text-gray-500"><TruncateText text={note.content} limit={200} /></p>
+                <p className="text-gray-500">
+                    <TruncateText text={note.content} limit={200} />
+                </p>
             </div>
 
             {/* Owner and Project */}

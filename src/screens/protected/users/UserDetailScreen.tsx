@@ -40,7 +40,8 @@ export default function UserDetailScreen({ id }: { id: string }) {
                                     activeTab === tab.id
                                         ? 'bg-teal-800 text-white'
                                         : 'hover:bg-teal-800 bg-gray-200 text-baseColor'
-                                }`}>
+                                }`}
+                            >
                                 {tab.label}
                             </button>
                         ))}

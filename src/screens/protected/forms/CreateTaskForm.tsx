@@ -70,7 +70,7 @@ export default function CreateTaskForm({ onCloseForm }: CreateTaskFormProps) {
         }
 
         try {
-            await createTask({params: formData})
+            await createTask({ params: formData })
         } catch {
             toast.error('Failed to create task')
         }
@@ -91,7 +91,8 @@ export default function CreateTaskForm({ onCloseForm }: CreateTaskFormProps) {
             </h2>
             <form
                 onSubmit={handleSubmit}
-                className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+            >
                 <div className="col-span-2">
                     <label className="floating-label">
                         Task Name
@@ -129,13 +130,15 @@ export default function CreateTaskForm({ onCloseForm }: CreateTaskFormProps) {
                             value={formData.assigned_to}
                             onChange={handleChange}
                             className="form-input"
-                            required>
+                            required
+                        >
                             <option value="">Select Member</option>
                             {members?.map(member => (
                                 <option
                                     className="flex gap-2"
                                     key={member.id}
-                                    value={member.id}>
+                                    value={member.id}
+                                >
                                     {member.name}
                                 </option>
                             ))}
@@ -165,7 +168,8 @@ export default function CreateTaskForm({ onCloseForm }: CreateTaskFormProps) {
                             value={formData.priority_id}
                             onChange={handleChange}
                             className="form-input"
-                            required>
+                            required
+                        >
                             <option value="">Select priority</option>
                             {priorities?.map(priority => (
                                 <option key={priority.id} value={priority.id}>
@@ -184,7 +188,8 @@ export default function CreateTaskForm({ onCloseForm }: CreateTaskFormProps) {
                             value={formData.status_id}
                             onChange={handleChange}
                             className="form-input"
-                            required>
+                            required
+                        >
                             <option value="">Select Status</option>
                             {project?.task_status?.map(status => (
                                 <option key={status.id} value={status.id}>
@@ -212,13 +217,15 @@ export default function CreateTaskForm({ onCloseForm }: CreateTaskFormProps) {
                     <button
                         type="button"
                         onClick={onCloseForm}
-                        className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg shadow-sm hover:bg-gray-400 transition">
+                        className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg shadow-sm hover:bg-gray-400 transition"
+                    >
                         Cancel
                     </button>
                     <button
                         type="submit"
                         disabled={isCreating}
-                        className="px-6 py-2 bg-emerald-600 text-white rounded-lg shadow-md hover:bg-emerald-700 flex items-center transition">
+                        className="px-6 py-2 bg-emerald-600 text-white rounded-lg shadow-md hover:bg-emerald-700 flex items-center transition"
+                    >
                         {isCreating && <Loader className="animate-spin mr-2" />}
                         {isCreating ? 'Saving...' : 'Create Task'}
                     </button>

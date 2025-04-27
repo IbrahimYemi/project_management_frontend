@@ -92,7 +92,8 @@ export default function FormWrapper() {
         <div className="fixed inset-0 flex items-center justify-center bg-baseColor bg-opacity-80 backdrop-blur-sm z-[5000]">
             <div
                 ref={modalRef}
-                className="bg-gray-300 md:p-6 md:m-6 p-2 m-2 rounded w-full max-w-xl relative shadow-lg border border-gray-500 max-h-[95vh] overflow-y-auto">
+                className="bg-gray-300 md:p-6 md:m-6 p-2 m-2 rounded w-full max-w-xl relative shadow-lg border border-gray-500 max-h-[95vh] overflow-y-auto"
+            >
                 <div className="flex items-center justify-between mb-4 w-full">
                     <h2 className="text-xl font-semibold text-gray-700">
                         Form Wrapper
@@ -102,7 +103,8 @@ export default function FormWrapper() {
                     <button
                         className="text-gray-800 hover:text-gray-900 text-sm md:text-base"
                         onClick={handleCloseForm}
-                        autoFocus>
+                        autoFocus
+                    >
                         ✕
                     </button>
                 </div>

@@ -143,8 +143,8 @@ export default function HomeScreen() {
             {/* Footer */}
             <footer className="py-6 bg-baseColor text-center text-baseText">
                 <p>
-                    &copy; {new Date().getFullYear()} Workflowz. All
-                    rights reserved.
+                    &copy; {new Date().getFullYear()} Workflowz. All rights
+                    reserved.
                 </p>
             </footer>
         </div>

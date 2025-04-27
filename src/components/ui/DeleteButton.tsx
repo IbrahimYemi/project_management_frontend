@@ -24,7 +24,8 @@ export default function DeleteButton({
                         ? classNames
                         : 'bg-red-500 text-white hover:bg-red-600 py-2 px-4 rounded'
                 } transition`}
-                onClick={() => setModalOpen(true)}>
+                onClick={() => setModalOpen(true)}
+            >
                 {text}
             </button>
 

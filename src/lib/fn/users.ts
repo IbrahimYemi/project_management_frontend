@@ -29,8 +29,10 @@ export const fetchUsersData = async (
     return response.data
 }
 
-export const fetchUserData = async(id: string) => {
-    const response = await apiClient.get<ApiUserDetailsResponse>(`/api/users/${id}/get-details`)
+export const fetchUserData = async (id: string) => {
+    const response = await apiClient.get<ApiUserDetailsResponse>(
+        `/api/users/${id}/get-details`,
+    )
     return response.data.data
 }
 

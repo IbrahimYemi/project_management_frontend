@@ -12,7 +12,12 @@ interface AvatarProps {
     showOverlay?: boolean
 }
 
-const Avatar: React.FC<AvatarProps> = ({ size = 40, userImage, username, showOverlay = true }) => {
+const Avatar: React.FC<AvatarProps> = ({
+    size = 40,
+    userImage,
+    username,
+    showOverlay = true,
+}) => {
     const { user: authUser } = useAppSelector(state => state.auth)
     const authUserImageUrl = authUser?.avatar
     const authUserName = authUser?.name || 'App User'

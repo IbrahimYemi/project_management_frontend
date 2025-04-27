@@ -40,7 +40,8 @@ export default function Header({
             <div className="flex items-center gap-4">
                 <button
                     className="md:hidden text-baseColor"
-                    onClick={onToggleSidebar}>
+                    onClick={onToggleSidebar}
+                >
                     <AlignLeft className="w-6 h-6" />
                 </button>
                 <Breadcrumbs />
@@ -52,7 +53,8 @@ export default function Header({
                 <div className="relative">
                     <button
                         className="relative text-baseColor md:inline-block hidden"
-                        onClick={toggleNotifications}>
+                        onClick={toggleNotifications}
+                    >
                         <Bell className="w-6 h-6" />
                         <span className="absolute -top-1 -right-1 text-white bg-emerald-600 text-red text-xs rounded-full px-1">
                             {notifications?.length || 0}

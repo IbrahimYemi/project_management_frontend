@@ -79,7 +79,8 @@ export function ProjectPieChart({
                 <Select value={activeProject} onValueChange={setActiveProject}>
                     <SelectTrigger
                         className="ml-auto h-7 w-[160px] rounded-md pl-2.5"
-                        aria-label="Select a status">
+                        aria-label="Select a status"
+                    >
                         <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent align="end" className="rounded-xl">
@@ -87,7 +88,8 @@ export function ProjectPieChart({
                             <SelectItem
                                 key={item.name}
                                 value={item.name}
-                                className="rounded-md">
+                                className="rounded-md"
+                            >
                                 <div className="flex items-center gap-2 text-xs">
                                     <span
                                         className="flex h-3 w-3 shrink-0 rounded-md"
@@ -115,7 +117,8 @@ export function ProjectPieChart({
                     <ChartContainer
                         id={id}
                         config={chartConfig}
-                        className="mx-auto aspect-square w-full max-w-[300px]">
+                        className="mx-auto aspect-square w-full max-w-[300px]"
+                    >
                         <PieChart>
                             <ChartTooltip
                                 cursor={false}
@@ -146,7 +149,8 @@ export function ProjectPieChart({
                                             innerRadius={outerRadius + 12}
                                         />
                                     </g>
-                                )}>
+                                )}
+                            >
                                 <Label
                                     content={({ viewBox }) => {
                                         if (
@@ -159,11 +163,13 @@ export function ProjectPieChart({
                                                     x={viewBox.cx}
                                                     y={viewBox.cy}
                                                     textAnchor="middle"
-                                                    dominantBaseline="middle">
+                                                    dominantBaseline="middle"
+                                                >
                                                     <tspan
                                                         x={viewBox.cx}
                                                         y={viewBox.cy}
-                                                        className="fill-foreground text-3xl font-bold">
+                                                        className="fill-foreground text-3xl font-bold"
+                                                    >
                                                         {
                                                             projectData[
                                                                 activeIndex
@@ -177,7 +183,8 @@ export function ProjectPieChart({
                                                             (viewBox.cy || 0) +
                                                             24
                                                         }
-                                                        className="fill-muted-foreground">
+                                                        className="fill-muted-foreground"
+                                                    >
                                                         {
                                                             projectData[
                                                                 activeIndex

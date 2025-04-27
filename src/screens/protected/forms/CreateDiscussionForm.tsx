@@ -83,13 +83,15 @@ export default function CreateDiscussionForm({
                     <button
                         type="button"
                         onClick={onCloseForm}
-                        className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                        className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                    >
                         Cancel
                     </button>
                     <button
                         type="submit"
                         className="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 flex items-center"
-                        disabled={isCreateDiscussionLoading}>
+                        disabled={isCreateDiscussionLoading}
+                    >
                         {isCreateDiscussionLoading && (
                             <Loader className="animate-spin mr-2" />
                         )}

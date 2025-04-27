@@ -59,7 +59,8 @@ export default function AccountSettings({
                             user?.isActive
                                 ? 'bg-green-100 text-green-700'
                                 : 'bg-red-100 text-red-700'
-                        }`}>
+                        }`}
+                    >
                         {user?.isActive ? 'Active' : 'Inactive'}
                     </span>
                 </div>
@@ -100,7 +101,8 @@ export default function AccountSettings({
                                             user?.id ?? '',
                                         )
                                     }
-                                    title="Make Admin">
+                                    title="Make Admin"
+                                >
                                     <UserPlus />
                                 </button>
                             )}
@@ -114,7 +116,8 @@ export default function AccountSettings({
                                             user?.id ?? '',
                                         )
                                     }
-                                    title="Make Team Lead">
+                                    title="Make Team Lead"
+                                >
                                     <UserPen />
                                 </button>
                             )}
@@ -128,7 +131,8 @@ export default function AccountSettings({
                                             user?.id ?? '',
                                         )
                                     }
-                                    title="Make Member">
+                                    title="Make Member"
+                                >
                                     <User2 />
                                 </button>
                             )}
@@ -139,7 +143,8 @@ export default function AccountSettings({
                             onClick={() =>
                                 handleUserActions('restrict', user?.id ?? '')
                             }
-                            disabled={!user?.isActive}>
+                            disabled={!user?.isActive}
+                        >
                             <LockKeyhole />
                         </button>
                         <button
@@ -149,7 +154,8 @@ export default function AccountSettings({
                             onClick={() =>
                                 handleUserActions('activate', user?.id ?? '')
                             }
-                            disabled={user?.isActive}>
+                            disabled={user?.isActive}
+                        >
                             <LockKeyholeOpenIcon />
                         </button>
                         <button
@@ -158,7 +164,8 @@ export default function AccountSettings({
                             className="px-3 py-1 text-sm bg-red-500 text-white rounded"
                             onClick={() =>
                                 handleUserActions('delete', user?.id ?? '')
-                            }>
+                            }
+                        >
                             <Trash />
                         </button>
                     </div>

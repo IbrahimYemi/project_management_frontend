@@ -25,7 +25,8 @@ export default function ViewSwitcher({
                     viewMode === 'table'
                         ? 'bg-gray-200'
                         : 'hover:bg-gray-100 bg-gray-500'
-                }`}>
+                }`}
+            >
                 <List className="w-5 h-5" />
             </button>
             <button
@@ -34,7 +35,8 @@ export default function ViewSwitcher({
                     viewMode === 'card'
                         ? 'bg-gray-200'
                         : 'hover:bg-gray-100 bg-gray-500'
-                }`}>
+                }`}
+            >
                 <Grid className="w-5 h-5" />
             </button>
             <button
@@ -46,7 +48,8 @@ export default function ViewSwitcher({
                     viewMode === 'kanban'
                         ? 'bg-gray-200'
                         : 'hover:bg-gray-100 bg-gray-500'
-                }`}>
+                }`}
+            >
                 <Kanban className="w-5 h-5" />
             </button>
             <FormDispatcher

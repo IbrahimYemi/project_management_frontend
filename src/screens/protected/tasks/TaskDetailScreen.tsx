@@ -111,7 +111,8 @@ export default function TaskDetailScreen({ id }: { id: string }) {
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={handleGoBack}
-                                className="bg-blue-500 flex gap-1 items-center text-white p-2 rounded-md text-sm md:text-base">
+                                className="bg-blue-500 flex gap-1 items-center text-white p-2 rounded-md text-sm md:text-base"
+                            >
                                 <ArrowLeft className="size-4" /> Back
                             </button>
                             {['overview', 'discussions', 'files'].map(t => (
@@ -122,7 +123,8 @@ export default function TaskDetailScreen({ id }: { id: string }) {
                                         tab === t
                                             ? ' border-b-2 border-brand text-white'
                                             : 'text-gray-400'
-                                    }`}>
+                                    }`}
+                                >
                                     {t.charAt(0).toUpperCase() + t.slice(1)}
                                 </button>
                             ))}
@@ -252,7 +254,8 @@ export default function TaskDetailScreen({ id }: { id: string }) {
                                                 discussion => (
                                                     <div
                                                         key={discussion?.id}
-                                                        className="flex gap-3 items-start p-2 border-b relative w-full">
+                                                        className="flex gap-3 items-start p-2 border-b relative w-full"
+                                                    >
                                                         <div className="w-12 h-12">
                                                             <Avatar
                                                                 userImage={
@@ -287,8 +290,7 @@ export default function TaskDetailScreen({ id }: { id: string }) {
                                                             </p>
                                                         </div>
                                                         <div className="absolute top-0 right-0">
-                                                            {
-                                                            new Date(
+                                                            {new Date(
                                                                 discussion?.created_at,
                                                             ).getTime() >
                                                                 new Date().getTime() -
@@ -378,12 +380,14 @@ export default function TaskDetailScreen({ id }: { id: string }) {
                                         {taskDetails?.files.map(file => (
                                             <li
                                                 key={file?.id}
-                                                className="flex items-center justify-between border-b p-2">
+                                                className="flex items-center justify-between border-b p-2"
+                                            >
                                                 <a
                                                     href={file?.url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="flex items-center gap-2 text-brand underline">
+                                                    className="flex items-center gap-2 text-brand underline"
+                                                >
                                                     {file?.type.startsWith(
                                                         'image',
                                                     ) ? (
