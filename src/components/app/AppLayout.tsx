@@ -50,7 +50,7 @@ export default function AppLayout({
         <ErrorPage />
     ) : (
         <ProtectedLayout>
-            <div className="flex h-screen bg-complement p-2 gap-4">
+            <div className="flex h-screen bg-complement p-2 gap-4 max-w-screen-2xl mx-auto">
                 {/* Sidebar */}
                 <Sidebar
                     notificationCount={notifications.length ?? 0}
