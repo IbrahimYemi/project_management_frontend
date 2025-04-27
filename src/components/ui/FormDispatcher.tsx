@@ -39,8 +39,7 @@ export default function FormDispatcher({
 
         if (
             (type === 'create-schedule' ||
-                type === 'edit-schedule' ||
-                type === 'edit-task') &&
+                type === 'edit-schedule') &&
             authUser?.app_role !== 'Super Admin' &&
             authUser?.app_role !== 'Admin' &&
             authUser?.app_role !== 'Team Lead'
