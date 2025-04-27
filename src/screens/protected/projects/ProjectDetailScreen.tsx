@@ -94,6 +94,7 @@ export default function ProjectDetailScreen({ id }: { id: string }) {
                     )}
                     {activeTab === 'tasks' && (
                         <TasksList
+                            projectId={projectData?.project.id ?? ''}
                             status={projectData?.project.task_status ?? []}
                             tasks={projectData?.tasks ?? []}
                         />

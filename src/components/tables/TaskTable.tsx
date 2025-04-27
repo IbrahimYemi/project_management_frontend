@@ -29,7 +29,9 @@ const TaskTable: React.FC<TasksTableComponentProps> = ({ tasks }) => {
                 accessorKey: 'owner',
                 header: 'Owner',
                 cell: ({ row }) => (
-                    <div className="flex items-center space-x-1">
+                    <Link
+                        href={`/users/${row.original.owner.id}/view`}
+                        className="flex items-center space-x-1 relative">
                         <Avatar
                             userImage={row.original.owner.avatar}
                             username={row.original.owner.name}
@@ -42,11 +44,12 @@ const TaskTable: React.FC<TasksTableComponentProps> = ({ tasks }) => {
                                 {row.original.owner.email}
                             </p>
                         </div>
-                    </div>
+                    </Link>
                 ),
             },
             { accessorKey: 'name', header: 'Task' },
             { accessorKey: 'project.name', header: 'Project' },
+            { accessorKey: 'startDate', header: 'Start' },
             { accessorKey: 'dueDate', header: 'Due' },
             {
                 accessorKey: 'priority',
@@ -69,8 +72,7 @@ const TaskTable: React.FC<TasksTableComponentProps> = ({ tasks }) => {
                                         percentage > 40 && percentage <= 70,
                                     'bg-green-500': percentage > 70,
                                 },
-                            )}
-                        >
+                            )}>
                             {percentage}%
                         </span>
                     )
@@ -82,8 +84,7 @@ const TaskTable: React.FC<TasksTableComponentProps> = ({ tasks }) => {
                 cell: ({ row }) => (
                     <Link
                         href={`/tasks/${row.original.id}`}
-                        className={`px-3 py-2 text-xs rounded-md bg-teal-500 text-white`}
-                    >
+                        className={`px-3 py-2 text-xs rounded-md bg-teal-500 text-white`}>
                         view
                     </Link>
                 ),
@@ -110,8 +111,7 @@ const TaskTable: React.FC<TasksTableComponentProps> = ({ tasks }) => {
                             <th
                                 key={header.id}
                                 className="md:px-4 px-2 md:py-2 py-1 text-left border-b cursor-pointer"
-                                onClick={header.column.getToggleSortingHandler()}
-                            >
+                                onClick={header.column.getToggleSortingHandler()}>
                                 <div className="flex items-center gap-1">
                                     {flexRender(
                                         header.column.columnDef.header,
@@ -131,13 +131,11 @@ const TaskTable: React.FC<TasksTableComponentProps> = ({ tasks }) => {
                 {table.getRowModel().rows.map(row => (
                     <tr
                         key={row.id}
-                        className="border-b hover:bg-gray-800 text-sm md:text-base"
-                    >
+                        className="border-b hover:bg-gray-800 text-sm md:text-base">
                         {row.getVisibleCells().map(cell => (
                             <td
                                 key={cell.id}
-                                className="md:px-4 px-2 md:py-2 py-1"
-                            >
+                                className="md:px-4 px-2 md:py-2 py-1 min-w-32">
                                 {flexRender(
                                     cell.column.columnDef.cell,
                                     cell.getContext(),

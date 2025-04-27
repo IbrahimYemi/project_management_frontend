@@ -11,6 +11,7 @@ import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { setAppState } from '@/store/slices/appStateSlice'
 import { useAppDispatch } from '@/store/hooks'
 import Avatar from '../ui/Avatar'
+import TruncateText from '../ui/TruncateText'
 
 function NoteCard({ note }: { note: Note }) {
     const { deleteNote } = useNoteActions()
@@ -27,12 +28,12 @@ function NoteCard({ note }: { note: Note }) {
     }
 
     return (
-        <div className="group p-2 md:p-4 text-white rounded-lg bg-gray-800 shadow-lg border hover:border-emerald-400 transition-all">
+        <div className="group p-2 md:p-4 text-white rounded-lg bg-gray-800 shadow-lg border hover:border-emerald-400 transition-all w-full">
             <div className="h-36 overflow-hidden">
                 <h3 className="text-xl font-semibold mb-2 line-clamp-2">
                     {note.title}
                 </h3>
-                <p className="text-gray-500 line-clamp-5">{note.content}</p>
+                <p className="text-gray-500"><TruncateText text={note.content} limit={200} /></p>
             </div>
 
             {/* Owner and Project */}
@@ -46,7 +47,7 @@ function NoteCard({ note }: { note: Note }) {
                     <span>{note.owner.name}</span>
                 </div>
                 {note.project && (
-                    <span className="italic text-emerald-400 truncate max-w-[50%]">
+                    <span className="italic text-emerald-400 truncate md:max-w-[50%]">
                         {note.project.name ?? 'Personal Note'}
                     </span>
                 )}
@@ -72,7 +73,7 @@ function NoteCard({ note }: { note: Note }) {
                     />
                     <DeleteButton
                         text={<Trash className="w-4 h-4" />}
-                        classNames="bg-red-500 text-white rounded"
+                        classNames="bg-red-500 text-white rounded px-3 py-2"
                         onClick={() => {
                             dispatch(setAppState('isRequesting'))
                             deleteNote(note.id)

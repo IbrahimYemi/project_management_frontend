@@ -35,7 +35,10 @@ export default function DashboardScreen() {
         <AppLayout isLoading={isLoading}>
             <div className="grid grid-cols-1 gap-4">
                 {/* Project Charts */}
-                <ProjectPieChart projectData={data?.projects || []} />
+                <ProjectPieChart
+                    projectData={data?.projects || []}
+                    footerText="All projects status"
+                />
 
                 <ProjectLineChart
                     title="Project Progress"

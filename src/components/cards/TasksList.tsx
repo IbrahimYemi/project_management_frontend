@@ -4,26 +4,58 @@ import ViewSwitcher from './tasks/ViewSwitcher'
 import TaskCard from './tasks/TaskCard'
 import KanbanBoard from './tasks/KanbanBoard'
 import TaskProjectTable from './tasks/TaskProjectTable'
+import { useTaskActions } from '@/hooks/tasks/useTaskActions'
 
 type Props = {
     tasks: TaskType[]
     status: TaskStatus[]
+    projectId: string
 }
 
-export default function TasksList({ tasks, status }: Props) {
+export default function TasksList({ tasks, status, projectId }: Props) {
     const [viewMode, setViewMode] = useState<'table' | 'card' | 'kanban'>(
         'table',
     )
 
+    const { updateTaskStatus } = useTaskActions()
+
+    const statusUpdateTimeouts: { [taskId: string]: NodeJS.Timeout } = {}
+    const latestStatus: { [taskId: string]: number } = {}
+
     const handleStatusChange = (taskId: string, newStatusId: number) => {
-        console.log(`Updating task ${taskId} to status ID ${newStatusId}`)
+        // Save latest status
+        latestStatus[taskId] = newStatusId
+
+        // Clear any existing timeout for this task
+        if (statusUpdateTimeouts[taskId]) {
+            clearTimeout(statusUpdateTimeouts[taskId])
+        }
+
+        // Set a new timeout to dispatch the API call after 5 seconds
+        statusUpdateTimeouts[taskId] = setTimeout(async () => {
+            const statusToUpdate = latestStatus[taskId]
+
+            await updateTaskStatus({
+                id: taskId,
+                statusId: String(statusToUpdate),
+                projectId,
+            })
+
+            // Cleanup
+            delete statusUpdateTimeouts[taskId]
+            delete latestStatus[taskId]
+        }, 2500)
     }
 
     return (
         <div className="py-6  rounded-lg text-white">
             <div className="flex justify-between items-center mb-4">
                 <h3 className="text-2xl font-bold">Tasks</h3>
-                <ViewSwitcher viewMode={viewMode} setViewMode={setViewMode} />
+                <ViewSwitcher
+                    projectId={projectId}
+                    viewMode={viewMode}
+                    setViewMode={setViewMode}
+                />
             </div>
 
             {viewMode === 'table' && <TaskProjectTable tasks={tasks} />}

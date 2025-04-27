@@ -39,7 +39,7 @@ const ProjectsTable: React.FC<ProjectManagementTableProps> = ({
                 accessorKey: 'percentage',
                 header: 'Completion',
                 cell: ({ row }) => {
-                    const percentage = row.original.percentage
+                    const percentage = row.original?.percentage
 
                     return (
                         <span
@@ -64,12 +64,12 @@ const ProjectsTable: React.FC<ProjectManagementTableProps> = ({
                 cell: ({ row }) => (
                     <span
                         className={`px-2 py-1 text-white text-xs text-nowrap rounded-md ${
-                            row.original.is_completed
+                            row.original?.is_completed
                                 ? 'bg-green-700'
                                 : 'bg-yellow-700'
                         }`}
                     >
-                        {row.original.is_completed
+                        {row.original?.is_completed
                             ? 'Completed'
                             : 'In Progress'}
                     </span>
@@ -79,23 +79,23 @@ const ProjectsTable: React.FC<ProjectManagementTableProps> = ({
                 accessorKey: 'status.name',
                 header: 'Progress',
                 cell: ({ row }) => (
-                    <h2 className="flex gap-2">
-                        {row.original.status.name}
+                    <h2 className="text-nowrap">
+                        {row.original?.status?.name}
                         <span
                             className={clsx(
-                                'px-2 py-1 text-white text-xs rounded-md',
+                                'px-2 py-1 text-white text-xs rounded-md ml-2',
                                 {
                                     'bg-red-500':
-                                        row.original.status.percentage <= 40,
+                                        row.original?.status?.percentage <= 40,
                                     'bg-yellow-500':
-                                        row.original.status.percentage > 40 &&
-                                        row.original.status.percentage <= 70,
+                                        row.original?.status?.percentage > 40 &&
+                                        row.original?.status?.percentage <= 70,
                                     'bg-green-500':
-                                        row.original.status.percentage > 70,
+                                        row.original?.status?.percentage > 70,
                                 },
                             )}
                         >
-                            {row.original.status.percentage}%
+                            {row.original?.status?.percentage}%
                         </span>
                     </h2>
                 ),
@@ -106,7 +106,7 @@ const ProjectsTable: React.FC<ProjectManagementTableProps> = ({
                 cell: ({ row }) => (
                     <div className="flex gap-2">
                         <Link
-                            href={`/projects/${row.original.id}`}
+                            href={`/projects/${row.original?.id}`}
                             className="px-3 py-1 text-sm bg-blue-500 text-white rounded flex items-center justify-center"
                         >
                             View
@@ -117,20 +117,20 @@ const ProjectsTable: React.FC<ProjectManagementTableProps> = ({
                                     text={<Trash />}
                                     classNames="px-3 py-1 text-sm bg-red-500 text-white rounded"
                                     onClick={() =>
-                                        onDelete && onDelete(row.original.id)
+                                        onDelete && onDelete(row.original?.id)
                                     }
                                 />
                                 <button
                                     className={`px-3 py-1 text-sm ${
-                                        row.original.is_completed
+                                        row.original?.is_completed
                                             ? 'bg-gray-500'
                                             : 'bg-green-500'
                                     } text-white rounded`}
                                     onClick={() =>
                                         onMarkCompleted &&
-                                        onMarkCompleted(row.original.id)
+                                        onMarkCompleted(row.original?.id)
                                     }
-                                    disabled={row.original.is_completed}
+                                    disabled={row.original?.is_completed}
                                 >
                                     <CheckCircle />
                                 </button>

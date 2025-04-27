@@ -9,9 +9,10 @@ interface AvatarProps {
     size?: number
     username?: string
     userImage?: string
+    showOverlay?: boolean
 }
 
-const Avatar: React.FC<AvatarProps> = ({ size = 40, userImage, username }) => {
+const Avatar: React.FC<AvatarProps> = ({ size = 40, userImage, username, showOverlay = true }) => {
     const { user: authUser } = useAppSelector(state => state.auth)
     const authUserImageUrl = authUser?.avatar
     const authUserName = authUser?.name || 'App User'
@@ -33,6 +34,7 @@ const Avatar: React.FC<AvatarProps> = ({ size = 40, userImage, username }) => {
         : null
 
     const handleAvatarClick = () => {
+        if (!showOverlay) return
         if (proxiedImageUrl && !isImageError) setIsModalOpen(true)
     }
 
@@ -72,7 +74,7 @@ const Avatar: React.FC<AvatarProps> = ({ size = 40, userImage, username }) => {
                             alt={name}
                             width={400}
                             height={400}
-                            className="rounded-xl object-contain max-h-[80vh] max-w-[80vw] mx-auto"
+                            className="rounded-xl object-contain max-h-[80vh] max-w-[80vw] mx-auto h-auto w-auto"
                         />
                     </div>
                 </div>

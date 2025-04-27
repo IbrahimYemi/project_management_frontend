@@ -1,5 +1,7 @@
 import { User } from './authTypes'
 import { ApiSuccessResponse } from './generic'
+import { Projects } from './projects'
+import { TaskType } from './tasks'
 
 export type ApiUsersResponseData = {
     data: User[]
@@ -12,6 +14,16 @@ export type ApiUsersResponse = ApiSuccessResponse & {
 
 export type ApiAllUsersResponse = ApiSuccessResponse & {
     data: User[]
+}
+
+export type ApiUserDetailsResponse = ApiSuccessResponse & {
+    data: UserDetails
+}
+
+export type UserDetails = {
+    user: User
+    projects: Projects[]
+    tasks: TaskType[]
 }
 
 export type ApiGetUserResponse = ApiSuccessResponse & {

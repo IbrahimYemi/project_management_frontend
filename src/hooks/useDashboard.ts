@@ -8,5 +8,6 @@ export function useDashboard() {
         queryKey: [QUERY_KEYS.DASHBOARD],
         queryFn: fetchDashboardData,
         staleTime: 1000 * 60 * 5,
+        retry: 1,
     })
 }

@@ -8,5 +8,6 @@ export function useNotes(projectId?: string) {
         queryKey: [QUERY_KEYS.NOTES, projectId],
         queryFn: () => fetchNotesData(projectId),
         staleTime: 1000 * 60 * 5,
+        retry: 1,
     })
 }

@@ -50,8 +50,6 @@ export default function Sidebar({
     const [tasksOpen, setTasksOpen] = useState(false)
     const { user: authUser } = useAppSelector(state => state.auth)
 
-    const definition = authUser?.role === 'Member' ? 'Tasks' : 'Projects'
-
     return (
         <motion.div
             className={`fixed z-[5000] inset-y-0 left-0 w-full max-w-64 rounded-r-md md:rounded-md bg-baseColor duration-1000 text-baseText transition-transform transform ${
@@ -103,7 +101,7 @@ export default function Sidebar({
                         className="flex items-center w-full text-left text-titleText font-semibold mb-3 text-sm"
                         onClick={() => setTasksOpen(!tasksOpen)}
                     >
-                        <span>{definition}</span>
+                        <span>Projects</span>
                         {tasksOpen ? <ChevronUp /> : <ChevronDown />}
                     </button>
 

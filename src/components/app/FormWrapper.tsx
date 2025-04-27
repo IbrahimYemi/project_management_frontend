@@ -13,6 +13,10 @@ import CreateNoteForm from '@/screens/protected/forms/CreateNoteForm'
 import EditNoteForm from '@/screens/protected/forms/EditNoteForm'
 import CreateScheduleForm from '@/screens/protected/forms/CreateScheduleForm'
 import EditScheduleForm from '@/screens/protected/forms/EditScheduleForm'
+import CreateTaskForm from '@/screens/protected/forms/CreateTaskForm'
+import EditTaskForm from '@/screens/protected/forms/EditTaskForm'
+import CreateTaskFileForm from '@/screens/protected/forms/CreateTaskFileForm'
+import CreateDiscussionForm from '@/screens/protected/forms/CreateDiscussionForm'
 
 export default function FormWrapper() {
     const dispatch = useAppDispatch()
@@ -88,8 +92,7 @@ export default function FormWrapper() {
         <div className="fixed inset-0 flex items-center justify-center bg-baseColor bg-opacity-80 backdrop-blur-sm z-[5000]">
             <div
                 ref={modalRef}
-                className="bg-gray-300 md:p-6 md:m-6 p-2 m-2 rounded w-full max-w-xl relative shadow-lg border border-gray-500 max-h-[95vh] overflow-y-auto"
-            >
+                className="bg-gray-300 md:p-6 md:m-6 p-2 m-2 rounded w-full max-w-xl relative shadow-lg border border-gray-500 max-h-[95vh] overflow-y-auto">
                 <div className="flex items-center justify-between mb-4 w-full">
                     <h2 className="text-xl font-semibold text-gray-700">
                         Form Wrapper
@@ -99,8 +102,7 @@ export default function FormWrapper() {
                     <button
                         className="text-gray-800 hover:text-gray-900 text-sm md:text-base"
                         onClick={handleCloseForm}
-                        autoFocus
-                    >
+                        autoFocus>
                         ✕
                     </button>
                 </div>
@@ -132,6 +134,18 @@ export default function FormWrapper() {
                 )}
                 {formType === 'edit-schedule' && (
                     <EditScheduleForm onCloseForm={handleCloseForm} />
+                )}
+                {formType === 'create-task' && (
+                    <CreateTaskForm onCloseForm={handleCloseForm} />
+                )}
+                {formType === 'edit-task' && (
+                    <EditTaskForm onCloseForm={handleCloseForm} />
+                )}
+                {formType === 'taskFile' && (
+                    <CreateTaskFileForm onCloseForm={handleCloseForm} />
+                )}
+                {formType === 'create-discussion' && (
+                    <CreateDiscussionForm onCloseForm={handleCloseForm} />
                 )}
             </div>
         </div>

@@ -19,7 +19,6 @@ export const fetchSchedulesData = async (
     if (end) url += `&end=${end.toISOString()}`
 
     const response = await apiClient.get<ApiScheduleResponse>(url)
-    console.log('object', resourceId, response.data || [], url)
     return response.data
 }
 

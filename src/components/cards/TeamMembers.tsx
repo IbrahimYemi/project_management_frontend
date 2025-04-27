@@ -5,6 +5,7 @@ import FormDispatcher from '../ui/FormDispatcher'
 import { Edit2Icon } from 'lucide-react'
 import { appStorage } from '@/lib/generic.fn'
 import { STORAGE_KEYS } from '@/store/constants'
+import Link from 'next/link'
 
 type Props = {
     team: Team
@@ -35,7 +36,7 @@ export default function TeamMembers({
                     }
                     onOutsideClick={handlePathIdPersist}
                     type={'edit-team'}
-                    classNames="absolute top-6 right-0 bg-emerald-700 flex items-center gap-1 text-sm md:text-base text-white rounded-md text-center py-0.5 px-2"
+                    classNames="bg-emerald-700 flex items-center gap-1 text-sm md:text-base text-white rounded-md text-center py-0.5 px-2"
                 />
             </div>
             <p className="font-semibold">Lead: {team.teamLead}</p>
@@ -46,10 +47,12 @@ export default function TeamMembers({
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-5 mt-3">
                     {/* Team members list */}
                     {members.map(member => (
-                        <div
+                        <Link
+                            href={`/users/${member.id}/view`}
                             key={member.id}
-                            className="flex items-center space-x-3 border-b py-2 hover:bg-gray-600 p-1 rounded-md"
-                        >
+                            title={member.name}
+                            role='View User'
+                            className="flex items-center space-x-3 border-b py-2 hover:bg-gray-600 p-1 rounded-md">
                             <Avatar
                                 userImage={member.avatar}
                                 username={member.name}
@@ -58,7 +61,7 @@ export default function TeamMembers({
                                 <p className="font-semibold">{member.name}</p>
                                 <p className="text-sm">{member.role}</p>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>

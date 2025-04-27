@@ -17,7 +17,9 @@ export type TaskType = {
     project: Projects
     owner: User
     startDate: string
+    teamlead_id: string
     dueDate: string
+    due_date?: string
     createdDate: string
     updatedDate: string
     isCompleted: boolean
@@ -27,6 +29,25 @@ export type TaskType = {
     discussions?: DiscussionType[]
     taskFileCount?: number
     files?: FileType[]
+}
+
+export type CreateTaskParams = {
+    title: string
+    description: string
+    status_id: string
+    assigned_to: string
+    project_id: string
+    due_date: string
+    priority_id: string
+    priority_name?: string
+    taskImage?: string
+}
+
+export type CreateTaskFileParams = {
+    task_id: string
+    name: string
+    url: string
+    type: 'image' | 'docs'
 }
 
 export type FileType = {
@@ -45,6 +66,11 @@ export type DiscussionType = {
     user: User
     created_at: string
     updated_at: string
+}
+
+export type DiscussionParams = {
+    task_id: string
+    content: string
 }
 
 export type ApiTaskResponse = ApiSuccessResponse & {

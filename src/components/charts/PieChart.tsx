@@ -8,6 +8,7 @@ import {
     Card,
     CardContent,
     CardDescription,
+    CardFooter,
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
@@ -47,10 +48,16 @@ const chartConfig = {
     },
 } satisfies ChartConfig
 
-export function ProjectPieChart({ projectData }: { projectData: Project[] }) {
+export function ProjectPieChart({
+    projectData,
+    footerText = 'All projects status',
+}: {
+    projectData: Project[]
+    footerText?: string
+}) {
     const id = 'pie-project-status'
     const [activeProject, setActiveProject] = React.useState(
-        projectData[0].name,
+        projectData[0]?.name,
     )
     const colors = ['#ffae42', '#c1e899', '#9a6735', '#8a2be2', '#55883b']
 
@@ -72,8 +79,7 @@ export function ProjectPieChart({ projectData }: { projectData: Project[] }) {
                 <Select value={activeProject} onValueChange={setActiveProject}>
                     <SelectTrigger
                         className="ml-auto h-7 w-[160px] rounded-md pl-2.5"
-                        aria-label="Select a status"
-                    >
+                        aria-label="Select a status">
                         <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent align="end" className="rounded-xl">
@@ -81,8 +87,7 @@ export function ProjectPieChart({ projectData }: { projectData: Project[] }) {
                             <SelectItem
                                 key={item.name}
                                 value={item.name}
-                                className="rounded-md"
-                            >
+                                className="rounded-md">
                                 <div className="flex items-center gap-2 text-xs">
                                     <span
                                         className="flex h-3 w-3 shrink-0 rounded-md"
@@ -99,87 +104,101 @@ export function ProjectPieChart({ projectData }: { projectData: Project[] }) {
                 </Select>
             </CardHeader>
             <CardContent className="flex flex-1 justify-center pb-0">
-                <ChartContainer
-                    id={id}
-                    config={chartConfig}
-                    className="mx-auto aspect-square w-full max-w-[300px]"
-                >
-                    <PieChart>
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
-                        />
-                        <Pie
-                            data={projectData.map((item, index) => ({
-                                ...item,
-                                fill: colors[index % colors.length],
-                            }))}
-                            dataKey="value"
-                            nameKey="name"
-                            innerRadius={60}
-                            strokeWidth={5}
-                            activeIndex={activeIndex}
-                            activeShape={({
-                                outerRadius = 0,
-                                ...props
-                            }: PieSectorDataItem) => (
-                                <g>
-                                    <Sector
-                                        {...props}
-                                        outerRadius={outerRadius + 10}
-                                    />
-                                    <Sector
-                                        {...props}
-                                        outerRadius={outerRadius + 25}
-                                        innerRadius={outerRadius + 12}
-                                    />
-                                </g>
-                            )}
-                        >
-                            <Label
-                                content={({ viewBox }) => {
-                                    if (
-                                        viewBox &&
-                                        'cx' in viewBox &&
-                                        'cy' in viewBox
-                                    ) {
-                                        return (
-                                            <text
-                                                x={viewBox.cx}
-                                                y={viewBox.cy}
-                                                textAnchor="middle"
-                                                dominantBaseline="middle"
-                                            >
-                                                <tspan
+                {/* empty state in case of no data ?? */}
+                {projectData.every(item => item.value === 0) ? (
+                    <div className="h-40 flex items-center justify-center">
+                        <h1 className="text-white text-lg">
+                            Empty data, start implementing!
+                        </h1>
+                    </div>
+                ) : (
+                    <ChartContainer
+                        id={id}
+                        config={chartConfig}
+                        className="mx-auto aspect-square w-full max-w-[300px]">
+                        <PieChart>
+                            <ChartTooltip
+                                cursor={false}
+                                content={<ChartTooltipContent hideLabel />}
+                            />
+                            <Pie
+                                data={projectData.map((item, index) => ({
+                                    ...item,
+                                    fill: colors[index % colors.length],
+                                }))}
+                                dataKey="value"
+                                nameKey="name"
+                                innerRadius={60}
+                                strokeWidth={5}
+                                activeIndex={activeIndex}
+                                activeShape={({
+                                    outerRadius = 0,
+                                    ...props
+                                }: PieSectorDataItem) => (
+                                    <g>
+                                        <Sector
+                                            {...props}
+                                            outerRadius={outerRadius + 10}
+                                        />
+                                        <Sector
+                                            {...props}
+                                            outerRadius={outerRadius + 25}
+                                            innerRadius={outerRadius + 12}
+                                        />
+                                    </g>
+                                )}>
+                                <Label
+                                    content={({ viewBox }) => {
+                                        if (
+                                            viewBox &&
+                                            'cx' in viewBox &&
+                                            'cy' in viewBox
+                                        ) {
+                                            return (
+                                                <text
                                                     x={viewBox.cx}
                                                     y={viewBox.cy}
-                                                    className="fill-foreground text-3xl font-bold"
-                                                >
-                                                    {
-                                                        projectData[activeIndex]
-                                                            .value
-                                                    }
-                                                    %
-                                                </tspan>
-                                                <tspan
-                                                    x={viewBox.cx}
-                                                    y={(viewBox.cy || 0) + 24}
-                                                    className="fill-muted-foreground"
-                                                >
-                                                    {
-                                                        projectData[activeIndex]
-                                                            .name
-                                                    }
-                                                </tspan>
-                                            </text>
-                                        )
-                                    }
-                                }}
-                            />
-                        </Pie>
-                    </PieChart>
-                </ChartContainer>
+                                                    textAnchor="middle"
+                                                    dominantBaseline="middle">
+                                                    <tspan
+                                                        x={viewBox.cx}
+                                                        y={viewBox.cy}
+                                                        className="fill-foreground text-3xl font-bold">
+                                                        {
+                                                            projectData[
+                                                                activeIndex
+                                                            ].value
+                                                        }
+                                                        %
+                                                    </tspan>
+                                                    <tspan
+                                                        x={viewBox.cx}
+                                                        y={
+                                                            (viewBox.cy || 0) +
+                                                            24
+                                                        }
+                                                        className="fill-muted-foreground">
+                                                        {
+                                                            projectData[
+                                                                activeIndex
+                                                            ].name
+                                                        }
+                                                    </tspan>
+                                                </text>
+                                            )
+                                        }
+                                    }}
+                                />
+                            </Pie>
+                        </PieChart>
+                    </ChartContainer>
+                )}
             </CardContent>
+            <CardFooter className="flex-col items-start gap-2 text-sm">
+                <div className="leading-none text-muted-foreground">
+                    {footerText}
+                </div>
+            </CardFooter>
         </Card>
     )
 }

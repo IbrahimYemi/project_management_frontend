@@ -85,7 +85,6 @@ export default function EditProjectForm({
         }
 
         try {
-            console.log(formData)
             await editProject({
                 id: cachedProjectDetails?.id as string,
                 data: formData,

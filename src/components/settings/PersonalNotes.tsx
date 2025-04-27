@@ -12,7 +12,7 @@ export default function PersonalNotes() {
     if (isError) return <ErrorComponent errorMessage="Error loading notes" />
 
     return isLoading ? (
-        <div className="flex items-center text-baseColor justify-center h-full m-6 md:mt-24">
+        <div className="flex items-center text-gray-200 justify-center h-full m-6 md:mt-24">
             <Loader className="animate-spin" /> Loading...
         </div>
     ) : (

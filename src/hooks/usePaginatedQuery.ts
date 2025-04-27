@@ -48,15 +48,13 @@ export function usePaginatedQuery<T>({
                 resourceId,
             ),
         staleTime,
+        retry: 1,
     })
 
     const handleSearchQuery = (query: string) => {
-        console.log('initial', currentPage, searchQuery)
         setSearchQuery(query)
         setCurrentPage(1)
-        console.log('before', currentPage, searchQuery)
         refetch()
-        console.log('after', currentPage, searchQuery)
     }
 
     return {

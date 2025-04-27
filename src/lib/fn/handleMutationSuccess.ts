@@ -13,11 +13,13 @@ type SuccessHandlerProps = {
 export const handleMutationSuccess = ({
     dispatch,
     queryClient,
-    message = 'Action completed successfully!',
+    message,
     queryKeys = [],
 }: SuccessHandlerProps) => {
     dispatch(setAppState('isSuccess'))
-    toast.success(message)
+    if (message) {
+        toast.success(message)
+    }
 
     // Invalidate queries if provided
     if (queryClient && queryKeys.length > 0) {

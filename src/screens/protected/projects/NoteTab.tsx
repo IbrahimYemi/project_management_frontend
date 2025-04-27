@@ -20,7 +20,7 @@ export default function NoteTab({ id }: NotePageProps) {
             <Loader className="animate-spin" /> Loading...
         </div>
     ) : (
-        <div className="py-2 md:py-6 w-full overflow-x-auto">
+        <div className="py-2 md:py-6 w-full">
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold">Note</h2>
                 <FormDispatcher

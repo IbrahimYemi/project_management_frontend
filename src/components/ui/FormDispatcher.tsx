@@ -38,7 +38,9 @@ export default function FormDispatcher({
         }
 
         if (
-            (type === 'create-schedule' || type === 'edit-schedule') &&
+            (type === 'create-schedule' ||
+                type === 'edit-schedule' ||
+                type === 'edit-task') &&
             authUser?.app_role !== 'Super Admin' &&
             authUser?.app_role !== 'Admin' &&
             authUser?.app_role !== 'Team Lead'
@@ -58,8 +60,7 @@ export default function FormDispatcher({
     return (
         <button
             className={`${classNames} py-2 px-4 rounded transition`}
-            onClick={handleDispatchEvent}
-        >
+            onClick={handleDispatchEvent}>
             {text}
         </button>
     )

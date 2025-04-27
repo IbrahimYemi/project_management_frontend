@@ -1,6 +1,7 @@
 import {
     ApiAllUsersResponse,
     ApiInvitedUsersResponse,
+    ApiUserDetailsResponse,
     ApiUsersResponse,
     InviteUserParam,
     UserActionsType,
@@ -26,6 +27,11 @@ export const fetchUsersData = async (
     url = query ? `${url}&query=${query}` : url
     const response = await apiClient.get<ApiUsersResponse>(url)
     return response.data
+}
+
+export const fetchUserData = async(id: string) => {
+    const response = await apiClient.get<ApiUserDetailsResponse>(`/api/users/${id}/get-details`)
+    return response.data.data
 }
 
 export const fetchAllUsersData = async (): Promise<User[]> => {
@@ -89,7 +95,7 @@ export const changeRole = async (id: string, type: UserActionsType) => {
         type === 'make-admin'
             ? 'Admin'
             : type === 'make-teamlead'
-              ? 'Teamlead'
+              ? 'Team Lead'
               : 'Member'
     const params = { app_role: role }
     const response = await apiClient.post<ApiNoResponse>(

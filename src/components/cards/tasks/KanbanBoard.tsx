@@ -19,12 +19,15 @@ const KanbanBoard = ({ tasks, taskStatus, onStatusChange }: Props) => {
                 task.id === id
                     ? {
                           ...task,
-                          status: {
-                              id: newStatusId,
-                              name:
-                                  taskStatus.find(s => s.id === newStatusId)
-                                      ?.name || '',
-                          },
+                        status: {
+                            id: newStatusId,
+                            name:
+                                taskStatus.find(s => s.id === newStatusId)
+                                    ?.name || '',
+                            percentage:
+                                taskStatus.find(s => s.id === newStatusId)
+                                    ?.percentage || 0,
+                        },
                       }
                     : task,
             ),
@@ -36,7 +39,7 @@ const KanbanBoard = ({ tasks, taskStatus, onStatusChange }: Props) => {
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <div className="bg-gray-900 min-h-screen text-white overflow-x-auto">
+            <div className="bg-gray-900 min-h-[65vh] text-white overflow-x-auto">
                 <div className="flex gap-6 w-max">
                     {taskStatus.map(status => (
                         <KanbanColumn

@@ -7,6 +7,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useDrag } from 'react-dnd'
 import Badge from '@/components/ui/Badge'
+import FormDispatcher from '@/components/ui/FormDispatcher'
+import { appStorage } from '@/lib/generic.fn'
+import { STORAGE_KEYS } from '@/store/constants'
 
 const ItemType = 'CARD'
 
@@ -18,6 +21,23 @@ export const KanbanCard = ({ task }: { task: TaskType }) => {
             isDragging: !!monitor.isDragging(),
         }),
     }))
+
+    const handlePathIdPersist = () => {
+        appStorage.persist(
+            STORAGE_KEYS.RESOURCE_TO_EDIT,
+            JSON.stringify({
+                id: task?.id,
+                project_id: task?.project.id,
+                title: task?.name,
+                description: task?.description,
+                status_id: task?.status?.id,
+                assigned_to: task?.owner?.id,
+                due_date: task?.due_date,
+                priority_name: task?.priority,
+                taskImage: task?.taskImage,
+            }),
+        )
+    }
 
     const [menuOpen, setMenuOpen] = useState(false)
     const menuRef = useRef<HTMLDivElement>(null)
@@ -42,8 +62,7 @@ export const KanbanCard = ({ task }: { task: TaskType }) => {
             ref={drag as unknown as React.Ref<HTMLDivElement>}
             className={`p-2 bg-gray-800 text-white min-h-[12rem] rounded-md shadow-md border border-gray-700 cursor-grab transform transition-all ${
                 isDragging ? 'opacity-50 scale-95' : 'hover:shadow-lg'
-            }`}
-        >
+            }`}>
             {task?.taskImage && (
                 <Image
                     src={task?.taskImage}
@@ -66,16 +85,15 @@ export const KanbanCard = ({ task }: { task: TaskType }) => {
 
                     {menuOpen && (
                         <div className="absolute right-0 mt-2 w-20 bg-gray-900 border border-gray-700 shadow-lg rounded-md text-sm">
-                            <Link
-                                href={`/tasks/${task?.id}/edit`}
-                                className="block px-4 py-2 text-gray-300 hover:bg-gray-700"
-                            >
-                                Edit
-                            </Link>
+                            <FormDispatcher
+                                text={<h3>Edit</h3>}
+                                onOutsideClick={handlePathIdPersist}
+                                type={'edit-task'}
+                                classNames="block px-4 py-2 text-gray-300 hover:bg-gray-700 w-full text-left"
+                            />
                             <Link
                                 href={`/tasks/${task?.id}`}
-                                className="block px-4 py-2 text-gray-300 hover:bg-gray-700"
-                            >
+                                className="block px-4 py-2 text-gray-300 hover:bg-gray-700">
                                 View
                             </Link>
                         </div>
@@ -86,7 +104,7 @@ export const KanbanCard = ({ task }: { task: TaskType }) => {
             <Link href={`/tasks/${task?.id}`} className="font-semibold text-lg">
                 {task?.name}
             </Link>
-            <p className="text-sm text-gray-400 mt-1">
+            <p className="text-sm text-gray-400 mt-1 min-h-10">
                 <TruncateText text={task?.description} limit={120} />
             </p>
 

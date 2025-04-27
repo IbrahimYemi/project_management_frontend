@@ -67,13 +67,10 @@ export default function Notifications({
         if (notifications.length === 0) {
             return
         }
-        const allRead = notifications.reduce(
-            (acc, notification) => {
-                acc[notification?.id] = true
-                return acc
-            },
-            {} as Record<string, boolean>,
-        )
+        const allRead = notifications.reduce((acc, notification) => {
+            acc[notification?.id] = true
+            return acc
+        }, {} as Record<string, boolean>)
         setReadNotifications(allRead)
         dispatch(setAppState('isRequesting'))
         await markAllNotificationsAsRead()
@@ -87,12 +84,17 @@ export default function Notifications({
             meeting: `${notification?.dataId}`,
             other: '?',
         }
-
+    
         const url = routes[notification?.type] || '/'
-
-        // Open in a new tab
-        window.open(url, '_blank')
-    }
+    
+        if (notification?.type === 'meeting') {
+            // Open in a new tab
+            window.open(url, '_blank')
+        } else {
+            // Navigate within the same tab for scroll to work
+            router.push(url)
+        }
+    }    
 
     const getNotificationIcon = (type: string) => {
         switch (type) {
@@ -112,16 +114,14 @@ export default function Notifications({
     return (
         <div
             ref={dropdownRef}
-            className="absolute right-0 mt-2 w-96 bg-white border rounded-lg shadow-lg p-4 max-h-80 overflow-auto z-50 text-gray-800"
-        >
+            className="absolute right-0 mt-2 w-96 bg-white border rounded-lg shadow-lg p-4 max-h-80 overflow-auto z-50 text-gray-800">
             <div className="flex justify-between items-center mb-3">
                 <h3 className="font-semibold text-lg flex items-center gap-2">
                     <Bell className="w-5 h-5 text-brand" /> Notifications
                 </h3>
                 <button
                     onClick={markAllAsRead}
-                    className="text-sm hover:underline"
-                >
+                    className="text-sm hover:underline">
                     Mark All as Read
                 </button>
             </div>
@@ -149,8 +149,7 @@ export default function Notifications({
                             }`}
                             onClick={() =>
                                 handleNotificationClick(notification)
-                            }
-                        >
+                            }>
                             {getNotificationIcon(notification?.type)}
                             <input
                                 type="checkbox"
@@ -167,8 +166,7 @@ export default function Notifications({
                                         readNotifications[notification?.id]
                                             ? 'text-gray-500'
                                             : 'font-medium'
-                                    }`}
-                                >
+                                    }`}>
                                     {notification?.message}
                                 </p>
                                 <p className="text-xs text-gray-500">

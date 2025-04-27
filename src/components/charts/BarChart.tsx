@@ -39,22 +39,30 @@ export function ProjectBarChart({
                 <CardDescription>{description}</CardDescription>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={{}}>
-                    <BarChart accessibilityLayer data={tasks}>
-                        <CartesianGrid vertical={false} />
-                        <XAxis
-                            dataKey="name"
-                            tickLine={false}
-                            tickMargin={10}
-                            axisLine={false}
-                        />
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
-                        />
-                        <Bar dataKey="value" radius={8} fill={baseColor} />
-                    </BarChart>
-                </ChartContainer>
+                {tasks.every(item => item.value === 0) ? (
+                    <div className="h-40 flex items-center justify-center">
+                        <h1 className="text-white text-lg">
+                            Empty data, start implementing!
+                        </h1>
+                    </div>
+                ) : (
+                    <ChartContainer config={{}}>
+                        <BarChart accessibilityLayer data={tasks}>
+                            <CartesianGrid vertical={false} />
+                            <XAxis
+                                dataKey="name"
+                                tickLine={false}
+                                tickMargin={10}
+                                axisLine={false}
+                            />
+                            <ChartTooltip
+                                cursor={false}
+                                content={<ChartTooltipContent hideLabel />}
+                            />
+                            <Bar dataKey="value" radius={8} fill={baseColor} />
+                        </BarChart>
+                    </ChartContainer>
+                )}
             </CardContent>
             <CardFooter className="flex-col items-start gap-2 text-sm">
                 <div className="leading-none text-muted-foreground">

@@ -44,33 +44,42 @@ export function ProjectLineChart({
                 <CardDescription>{description}</CardDescription>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig}>
-                    <AreaChart
-                        accessibilityLayer
-                        data={chartData}
-                        margin={{ left: 12, right: 12 }}
-                    >
-                        <CartesianGrid vertical={false} />
-                        <XAxis
-                            dataKey="name"
-                            tickLine={false}
-                            axisLine={false}
-                            tickMargin={8}
-                            tickFormatter={value => value.slice(0, 3)}
-                        />
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent indicator="line" />}
-                        />
-                        <Area
-                            dataKey={dataKey}
-                            type="natural"
-                            fill={color}
-                            fillOpacity={0.4}
-                            stroke={color}
-                        />
-                    </AreaChart>
-                </ChartContainer>
+                {chartData.every(item => item.value === 0) ? (
+                    <div className="h-40 flex items-center justify-center">
+                        <h1 className="text-white text-lg">
+                            Empty data, start implementing!
+                        </h1>
+                    </div>
+                ) : (
+                    <ChartContainer config={chartConfig}>
+                        <AreaChart
+                            accessibilityLayer
+                            data={chartData}
+                            margin={{ left: 12, right: 12 }}>
+                            <CartesianGrid vertical={false} />
+                            <XAxis
+                                dataKey="name"
+                                tickLine={false}
+                                axisLine={false}
+                                tickMargin={8}
+                                tickFormatter={value => value.slice(0, 3)}
+                            />
+                            <ChartTooltip
+                                cursor={false}
+                                content={
+                                    <ChartTooltipContent indicator="line" />
+                                }
+                            />
+                            <Area
+                                dataKey={dataKey}
+                                type="natural"
+                                fill={color}
+                                fillOpacity={0.4}
+                                stroke={color}
+                            />
+                        </AreaChart>
+                    </ChartContainer>
+                )}
             </CardContent>
             <CardFooter>
                 <div className="flex w-full items-start gap-2 text-sm">

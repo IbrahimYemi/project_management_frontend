@@ -8,7 +8,7 @@ export const STORAGE_KEYS = {
     PROJECTS_SEARCH_INPUT: 'projectsSearchText',
     CALENDAR_SEARCH_INPUT: 'calendarSearchText',
     ACTIVE_PATH_ID: 'activePathId',
-    RESOURCE_TO_EDIT: 'noteToEdit',
+    RESOURCE_TO_EDIT: 'resourceToEdit',
 } as const
 
 // React Query Keys
@@ -19,6 +19,7 @@ export const QUERY_KEYS = {
         ALL: 'allUsers',
         GENERAL: 'allUnpaginatedUsers',
         INVITED: 'invitedUsers',
+        SINGLE: 'singleUser',
     },
     PROJECTS: {
         ALL: 'allProjects',

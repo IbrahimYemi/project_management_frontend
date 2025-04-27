@@ -28,7 +28,7 @@ export function ErrorComponent({
     }
 
     return (
-        <div className="flex justify-center items-center m-5 md:m-10 bg-baseColor">
+        <div className="flex justify-center items-center m-5 md:m-10 bg-baseColor h-full">
             <div className="text-center bg-red-200 p-8 rounded-md shadow-lg max-w-sm w-full">
                 <AlertTriangle className="mx-auto text-red-500 text-6xl mb-6" />
                 <h1 className="text-3xl font-semibold text-titleText mb-4">

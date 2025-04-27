@@ -32,6 +32,12 @@ export type ProjectDetails = {
     team: Team
     members: User[]
     tasks: TaskType[]
+    priorities: Priority[]
+}
+
+export type Priority = {
+    id: string
+    name: string
 }
 
 export type CreateProjectParams = {

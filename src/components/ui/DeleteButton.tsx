@@ -19,9 +19,12 @@ export default function DeleteButton({
     return (
         <>
             <button
-                className={`${classNames} py-2 px-4 rounded bg-red-500 text-white transition hover:bg-red-600`}
-                onClick={() => setModalOpen(true)}
-            >
+                className={`${
+                    classNames
+                        ? classNames
+                        : 'bg-red-500 text-white hover:bg-red-600 py-2 px-4 rounded'
+                } transition`}
+                onClick={() => setModalOpen(true)}>
                 {text}
             </button>
 

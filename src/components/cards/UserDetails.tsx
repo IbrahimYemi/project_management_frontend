@@ -58,7 +58,7 @@ export default function UserDetails({
     return (
         <div className="relative flex items-center justify-between my-3 w-full px-4">
             <div className="flex items-center gap-2">
-                <Avatar size={30} />
+                <Avatar showOverlay={false} size={30} />
                 <div className="">
                     <h2 className="font-semibold text-xs text-brand">
                         {authUser?.name}

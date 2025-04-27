@@ -84,7 +84,7 @@ export default function CreateTeamForm({ onCloseForm }: CreateTeamFormProps) {
     )
 
     const eligibleTeamLeads = filteredUsers?.filter(user =>
-        ['super admin', 'admin', 'team lead'].includes(user.app_role || ''),
+        ['Super Admin', 'Admin', 'Team Lead'].includes(user.app_role || ''),
     )
 
     return (

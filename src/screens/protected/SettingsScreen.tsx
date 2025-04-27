@@ -6,6 +6,8 @@ import AccountSettings from '@/components/settings/AccountSettings'
 import ProfileSettings from '@/components/settings/ProfileSettings'
 import React from 'react'
 import PersonalNotes from '@/components/settings/PersonalNotes'
+import { useAppSelector } from '@/store/hooks'
+import { User } from '@/types/authTypes'
 
 const tabs = [
     { id: 'account', label: 'Account Details' },
@@ -14,6 +16,7 @@ const tabs = [
 ]
 
 export default function SettingsScreen() {
+    const { user } = useAppSelector(state => state.auth)
     const searchParams = useSearchParams()
     const router = useRouter()
 
@@ -39,8 +42,7 @@ export default function SettingsScreen() {
                                     activeTab === tab.id
                                         ? 'bg-teal-800 text-white'
                                         : 'hover:bg-teal-800 bg-gray-200 text-baseColor'
-                                }`}
-                            >
+                                }`}>
                                 {tab.label}
                             </button>
                         ))}
@@ -48,7 +50,9 @@ export default function SettingsScreen() {
 
                     {/* Content */}
                     <div className="">
-                        {activeTab === 'account' && <AccountSettings />}
+                        {activeTab === 'account' && (
+                            <AccountSettings user={user || ({} as User)} />
+                        )}
                         {activeTab === 'profile' && <ProfileSettings />}
                         {activeTab === 'note-taking' && <PersonalNotes />}
                     </div>

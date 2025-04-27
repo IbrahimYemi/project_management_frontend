@@ -32,7 +32,7 @@ export const KanbanColumn = ({
 
                 <FormDispatcher
                     text={<PlusIcon className="w-5 h-5" />}
-                    type="task"
+                    type="create-task"
                     classNames="bg-emerald-600 text-white"
                 />
             </div>

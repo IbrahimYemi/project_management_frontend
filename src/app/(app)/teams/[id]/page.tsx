@@ -4,7 +4,7 @@ import ErrorPage from '@/components/cards/ErrorPage'
 import TeamDetailScreen from '@/screens/protected/teams/TeamDetailScreen'
 import { useParams } from 'next/navigation'
 
-export default function TeamsPage() {
+export default function TeamPage() {
     const { id } = useParams()
 
     if (!id || Array.isArray(id)) {

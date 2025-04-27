@@ -121,3 +121,11 @@ body {
         @apply bg-background text-foreground;
     }
 }
+
+.floating-label {
+    @apply block text-sm font-medium text-gray-400 mb-1;
+}
+
+.form-input {
+    @apply w-full bg-gray-800 text-gray-100 border border-gray-600 px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all duration-200;
+}

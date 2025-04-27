@@ -51,7 +51,7 @@ export default function InviteUsersForm({ onCloseForm }: InviteUsersFormProps) {
     }
 
     return (
-        <div className="p-6 bg-baseColor text-gray-200 rounded-lg shadow-lg w-96 max-w-full animate-fadeIn">
+        <div className="max-w-2xl mx-auto p-6 bg-baseColor rounded-xl shadow-lg animate-fadeIn text-gray-200">
             {/* Header */}
             <h2 className="text-xl font-semibold text-gray-200 mb-4">
                 Invite User

@@ -1,5 +1,5 @@
 import TasksScreen from '@/screens/protected/tasks/TasksScreen'
 
-export default function UsersPage() {
+export default function TasksPage() {
     return <TasksScreen />
 }
