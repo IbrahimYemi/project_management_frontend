@@ -27,6 +27,7 @@ import { STORAGE_KEYS } from '@/store/constants'
 import PaginationControl from './PaginationControl'
 import { UserActionsType } from '@/types/users'
 import { useRouter } from 'next/navigation'
+import DeleteButton from '../ui/DeleteButton'
 
 type UserManagementTableProps = {
     users: User[]
@@ -77,8 +78,7 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
                             row.original.isActive
                                 ? 'bg-green-500 text-white'
                                 : 'bg-red-500 text-white'
-                        }`}
-                    >
+                        }`}>
                         {row.original.isActive ? 'Active' : 'Restricted'}
                     </span>
                 ),
@@ -102,8 +102,7 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
                                                 user.id,
                                             )
                                         }
-                                        title="Make Admin"
-                                    >
+                                        title="Make Admin">
                                         <UserPlus />
                                     </button>
                                 )}
@@ -117,8 +116,7 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
                                                 user.id,
                                             )
                                         }
-                                        title="Make Team Lead"
-                                    >
+                                        title="Make Team Lead">
                                         <UserPen />
                                     </button>
                                 )}
@@ -132,8 +130,7 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
                                                 user.id,
                                             )
                                         }
-                                        title="Make Member"
-                                    >
+                                        title="Make Member">
                                         <User2 />
                                     </button>
                                 )}
@@ -143,8 +140,7 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
                                 className="px-3 py-1 text-sm bg-orange-900 text-white rounded"
                                 onClick={() =>
                                     router.push(`/users/${user.id}/view`)
-                                }
-                            >
+                                }>
                                 <EyeIcon />
                             </button>
                             <button
@@ -154,8 +150,7 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
                                 onClick={() =>
                                     handleUserActions('restrict', user.id)
                                 }
-                                disabled={!user.isActive}
-                            >
+                                disabled={!user.isActive}>
                                 <LockKeyhole />
                             </button>
                             <button
@@ -165,20 +160,17 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
                                 onClick={() =>
                                     handleUserActions('activate', user.id)
                                 }
-                                disabled={user.isActive}
-                            >
+                                disabled={user.isActive}>
                                 <LockKeyholeOpenIcon />
                             </button>
-                            <button
-                                title="Delete"
-                                role="Delete user"
-                                className="px-3 py-1 text-sm bg-red-500 text-white rounded"
+                            <DeleteButton
+                                classNames="px-3 py-1 text-sm bg-red-500 text-white rounded"
                                 onClick={() =>
                                     handleUserActions('delete', user.id)
                                 }
-                            >
-                                <Trash />
-                            </button>
+                                text={<Trash size={16} />}
+                                confirmStatement="Are you sure you want to delete this invitation?"
+                            />
                         </div>
                     )
                 },
@@ -202,8 +194,7 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
                 <h2 className="text-xl font-semibold">User Management</h2>
                 <Link
                     href="/users/invites"
-                    className="bg-emerald-600 text-white rounded-md text-center py-0.5 px-2"
-                >
+                    className="bg-emerald-600 text-white rounded-md text-center py-0.5 px-2">
                     Invites
                 </Link>
             </div>
@@ -222,8 +213,7 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
                                     <th
                                         key={header.id}
                                         className="md:px-4 px-2 md:py-2 py-1 text-left border-b cursor-pointer"
-                                        onClick={header.column.getToggleSortingHandler()}
-                                    >
+                                        onClick={header.column.getToggleSortingHandler()}>
                                         <div className="flex items-center gap-1">
                                             {flexRender(
                                                 header.column.columnDef.header,
@@ -243,13 +233,11 @@ const UserManagementTable: React.FC<UserManagementTableProps> = ({
                         {table.getRowModel().rows.map(row => (
                             <tr
                                 key={row.id}
-                                className="border-b hover:bg-gray-800 text-sm md:text-base"
-                            >
+                                className="border-b hover:bg-gray-800 text-sm md:text-base">
                                 {row.getVisibleCells().map(cell => (
                                     <td
                                         key={cell.id}
-                                        className="md:px-4 px-2 md:py-2 py-1"
-                                    >
+                                        className="md:px-4 px-2 md:py-2 py-1">
                                         {flexRender(
                                             cell.column.columnDef.cell,
                                             cell.getContext(),
