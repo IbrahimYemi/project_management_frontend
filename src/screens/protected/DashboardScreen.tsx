@@ -11,7 +11,7 @@ import { useTeamActions } from '@/hooks/teams/useTeamActions'
 import { useDashboard } from '@/hooks/useDashboard'
 import { useAppDispatch } from '@/store/hooks'
 import { setAppState } from '@/store/slices/appStateSlice'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 
 const chartConfig: ChartConfig = {
@@ -50,6 +50,10 @@ export default function DashboardScreen() {
         // Trigger refetch only when the filter button is clicked
         refetch()
     }
+
+    useEffect(() => {
+        refetch()
+    }, [refetch])
 
     if (isError) return <ErrorPage error={error} />
 
