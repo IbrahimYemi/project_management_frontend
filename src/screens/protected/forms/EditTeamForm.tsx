@@ -118,7 +118,7 @@ export default function EditTeamForm({ onCloseForm }: EditTeamFormProps) {
     )
 
     const eligibleTeamLeads = filteredUsers?.filter(user =>
-        ['super admin', 'admin', 'team lead'].includes(user?.app_role || ''),
+        ['super admin', 'admin', 'team lead'].includes(user?.role.toLowerCase() || ''),
     )
 
     return (
