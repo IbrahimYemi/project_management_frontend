@@ -1,74 +1,103 @@
-'use client'
+"use client"
 
-import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
+import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts"
 
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import {
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from '@/components/ui/chart'
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart"
 import { Task } from '@/types/dashboard'
 
-type ProjectBarChartProps = {
-    title: string
-    description: string
-    tasks: Task[]
-    baseColor: string
-    footerText: string
-}
+const chartConfig = {
+  value: {
+    label: "value",
+    color: "hsl(var(--chart-1))",
+  },
+  owner: {
+    label: "owner",
+    color: "hsl(var(--chart-2))",
+  },
+} satisfies ChartConfig
 
+type ProjectBarChartProps = {
+  title: string
+  description: string
+  tasks: Task[]
+  baseColor?: string
+  footerText: string
+}
 export function ProjectBarChart({
-    title,
-    description,
-    tasks,
-    baseColor,
-    footerText,
+  title,
+  description,
+  tasks: chartData,
+  footerText,
 }: ProjectBarChartProps) {
-    return (
-        <Card className="bg-baseColor">
-            <CardHeader>
-                <CardTitle>{title}</CardTitle>
-                <CardDescription>{description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-                {tasks.every(item => item.value === 0) ? (
-                    <div className="h-40 flex items-center justify-center">
-                        <h1 className="text-white text-lg">
-                            Empty data, start implementing!
-                        </h1>
-                    </div>
-                ) : (
-                    <ChartContainer config={{}}>
-                        <BarChart accessibilityLayer data={tasks}>
-                            <CartesianGrid vertical={false} />
-                            <XAxis
-                                dataKey="name"
-                                tickLine={false}
-                                tickMargin={10}
-                                axisLine={false}
-                            />
-                            <ChartTooltip
-                                cursor={false}
-                                content={<ChartTooltipContent hideLabel />}
-                            />
-                            <Bar dataKey="value" radius={8} fill={baseColor} />
-                        </BarChart>
-                    </ChartContainer>
-                )}
-            </CardContent>
-            <CardFooter className="flex-col items-start gap-2 text-sm">
-                <div className="leading-none text-muted-foreground">
-                    {footerText}
-                </div>
-            </CardFooter>
-        </Card>
-    )
+  return (
+    <Card className="bg-baseColor">
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ChartContainer config={chartConfig}>
+          <LineChart
+            accessibilityLayer
+            data={chartData}
+            margin={{
+              top: 20,
+              left: 12,
+              right: 12,
+            }}
+          >
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="name"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickFormatter={(value) => value.slice(0, 3)}
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent indicator="line" />}
+            />
+            <Line
+              dataKey="value"
+              type="natural"
+              stroke="var(--color-value)"
+              strokeWidth={2}
+              dot={{
+                fill: "var(--color-value)",
+              }}
+              activeDot={{
+                r: 6,
+              }}
+            >
+              <LabelList
+                position="top"
+                offset={12}
+                className="fill-foreground"
+                fontSize={12}
+              />
+            </Line>
+          </LineChart>
+        </ChartContainer>
+      </CardContent>
+      <CardFooter className="flex-col items-start gap-2 text-sm">
+        <div className="flex gap-2 font-medium leading-none">
+          {footerText}
+        </div>
+      </CardFooter>
+    </Card>
+  )
 }
