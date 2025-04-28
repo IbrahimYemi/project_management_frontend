@@ -48,7 +48,7 @@ export const useTeamActions = () => {
                 dispatch,
                 queryClient,
                 message: data.message || 'Action successful!',
-                queryKeys: [QUERY_KEYS.TEAMS.ALL, id],
+                queryKeys: [QUERY_KEYS.TEAMS.SINGLE, id],
             })
         },
     })
